@@ -1,0 +1,101 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		.hora{
+			width:60px;
+		}
+	
+	</style>
+</head>
+
+<body>
+
+<h1>Cadastro de horários</h1>
+<div class="container">
+<form method="post">
+	<table>
+			<tr>
+			<td width=130px>Dia da semana: </td> <td>
+										<select class="form-control" name="diaSemana">
+												<option th:value = 2>Segunda-feira</option>
+												<option th:value = 3>Terça-feira</option>
+												<option th:value = 4>Quarta-feira</option>
+												<option th:value = 5>Quinta-feira</option>
+												<option th:value = 6>Sexta-feira</option>
+												<option th:value = 7>Sábado</option>
+												<option th:value = 1>Domingo</option>
+											</select>
+									<td>
+		</tr>
+	</table>
+	<table>
+		<tr height=10px>
+		</tr>
+		<tr>
+			<td width=135px>Hora de Chegada: </td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number" min="0" max="24" value="" name="horaInicio"/>
+												  <td>:</td>
+												  <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number" min="0" max="59" value="" name="minutoInicio"/></td>
+								   			      </td>
+		</tr>
+		<tr height=10px>
+		</tr>
+		<tr>
+			<td width=135px>Hora de Saída:</td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number"  min="0" max="24" value="" name="horaFim"/></td>
+											   <td>:</td>
+											   <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number"  min="0" max="59" value="" name="minutoFim"/></td>
+		</tr>
+		<tr height=20px>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td width=100px ></td>
+			<td align="right">
+				<a href="/usuarios">
+					<button type="button" class="btn btn-primary">
+			  			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar	
+					</button>
+				</a>
+				<button type="submit" class="btn btn-primary">
+			  		<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Salvar
+				</button>
+			</td>
+		</tr>
+	</table>
+</form>
+<script>
+	function maxLengthHora(object) {
+		var hora;
+	    if (object.value.length > object.max.length)
+	    	object.value = object.value.slice(0, object.max.length);
+	    else{
+	    	if (object.value > 24)
+	    		object.value = 24;
+	    	}
+	}
+	function maxLengthMinuto(object) {
+	    if (object.value.length > object.max.length)
+	    	object.value = object.value.slice(0, object.max.length);
+	    else{
+	    	if (object.value > 59)
+	    		object.value = 59;
+	    }
+	  }
+	
+	$(".hora").blur(function(){
+    	if (this.value >= 0 && this.value < 10){
+    		var hora = this.value;
+    		this.value = "0"+hora;
+    	}
+	});
+	
+</script>
+</div>
+</body>
+</html>

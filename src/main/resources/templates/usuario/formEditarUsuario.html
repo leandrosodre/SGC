@@ -1,0 +1,68 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+</head>
+
+<body>
+
+	<h1>Cadastro de Usuario</h1>
+	
+	<form class="container" method="post">
+				<table>
+		<tr>
+			<td>Login:</td> <td><input class="form-control" type="text" th:value="${usuario.login}" name="login"/></td>
+		</tr>
+		<tr>
+		<td>Senha:</td> 			<td><input class="form-control" type="password" th:value="${usuario.senha}" name="senha"/></td>
+		</tr>
+		<tr>
+		<td>Nível:</td> 		<td>
+									<select class="form-control" name="nivel">
+												<option th:value = 1 th:selected="${usuario.nivel}==1">Administrador</option>
+												<option th:value = 2 th:selected="${usuario.nivel}==2">Recepcionista</option>
+												<option th:value = 3 th:selected="${usuario.nivel}==3">Médico</option>
+											</select>
+								</td>
+		</tr>
+		<tr>
+		<td>Status:</td> 		<td>
+									<select class="form-control" name="status">	
+										<option th:value="'A'" th:selected="${usuario.status}=='I'">Ativo</option>
+										<option th:value="'I'" th:selected="${usuario.status}=='I'" >Inativo</option>
+			   	  					</select>
+		   	  					</td>
+		</tr>
+		<tr>
+		<td>CPF:</td>			<td><input class="form-control" id="cpf" type="text" th:value="${usuario.pessoa.cpf}" name="cpf"/></td>		
+		</tr>
+		<tr height="20px">
+		
+		</tr>
+		<tr>
+			<td>
+			</td> 
+			<td align="right">
+				<a href="/usuarios">
+					<button type="button" class="btn btn-primary">
+			  			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar	
+					</button>
+				</a>
+				<button type="submit" class="btn btn-primary">
+			  		<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Salvar
+				</button>
+			</td>
+		</tr>
+		</table>
+	</form>
+</body>
+	<script>
+		$(document).ready(function(){
+		    $('#cpf').mask('000.000.000-00');
+		});
+	</script>
+</html>

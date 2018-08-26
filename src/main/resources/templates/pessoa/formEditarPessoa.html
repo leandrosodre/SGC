@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<style>
+		td{
+			padding:4px;
+		}
+		h1{
+			padding:10px;
+		}
+	</style>
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+</head>
+
+<body th:each="pessoa : ${pessoa}">
+	<h1>Cadastro de Pessoas</h1>
+	<form class ="container" method="post">
+		<table>
+		<tr>
+			<td>Nome Completo:</td> <td><input class="form-control" type="text" th:value="${pessoa.nomeCompleto}" name="nomeCompleto"/></td>
+		</tr>
+		<tr>
+		<td>CPF:</td> 			<td><input class="form-control" id="cpf" type="text" th:value="${pessoa.cpf}" name="cpf"/></td>
+		</tr>
+		<tr>
+		<td>Sexo:</td> 		<td>
+								<select class="form-control" name="sexo">	
+									<option th:value="'M'">Masculino</option>
+									<option th:value="'F'">Feminino</option>
+		   	  					</select>
+		   	  				</td>
+		</tr>
+		<tr>
+			<td>Data de Nascimento:</td> 	<td><input class="form-control" type="date" th:value="${pessoa.dataNascimento}" name="dataNascimento"/></td>
+		</tr>
+		<tr>
+			<td>E-mail:</td> 	<td><input class="form-control" type="text" th:value="${pessoa.email}" name="email"/></td>
+		</tr>
+		<tr>
+			<td>Telefone:</td> 				<td><input id="telefone" class="form-control" type="text" th:value ="${pessoa.telefone}" name="telefone"/></td>
+		</tr>
+		<tr>
+			<td>Celular:</td>  				<td><input id="celular" class="form-control" type="text" th:value ="${pessoa.celular}" name="celular"/></td>
+		</tr>
+		<tr>
+			<td>Telefone Comercial:</td>    <td><input id="foneComercial" class="form-control" type="text" th:value ="${pessoa.foneComercial}" name="foneComercial"/></td>
+		</tr>
+		<tr>
+			<td>Estado Civil:</td>		<td>
+											<select class="form-control" name="estadoCivil">
+												<option th:value = 1>Solteiro(a)</option>
+												<option th:value = 2>Casado(a)</option>
+												<option th:value = 3>Divorciado(a)</option>
+												<option th:value = 4>Separado(a)</option>
+												<option th:value = 5>Viúvo(a)</option>
+											</select>
+										</td>
+		</tr>
+		<tr height="20px">
+		
+		</tr>
+		<tr>
+			<td align="center">Endereço:</td>
+		</tr>
+		<tr>
+			<td>Rua:</td> 				<td><input class="form-control" type="text" th:value="${pessoa.endereco}" name="endereco"/></td>
+		</tr>
+		<tr>
+			<td>Número:</td>			<td><input class="form-control" type="number" th:value="${pessoa.numero}" name="numero"/></td>
+		</tr>
+		<tr>
+			<td>Complemento:</td>		<td><input class="form-control" type="text"   th:value="${pessoa.complemento}" name="complemento"/></td>
+		</tr>
+		<tr>
+			<td>Bairro:</td>			<td><input class="form-control" type="text"   th:value="${pessoa.bairro}" name="bairro"/></td>
+		</tr>
+		<tr>
+			<td>Cidade:</td>			<td><input class="form-control" type="text"   th:value="${pessoa.cidade}" name="cidade"/></td>
+		</tr>
+		<tr>
+			<td>Estado:</td>			<td><input class="form-control" type="text"   th:value="${pessoa.estado}" name="estado"/></td>
+		</tr>
+		<tr>
+			<td>CEP:</td>				<td><input id="cep" class="form-control" type="text" th:value="${pessoa.cep}" name="cep"/></td>
+		</tr>
+		<tr height="20px">
+		
+		</tr>
+		<tr>
+			<td>
+			</td> 
+			<td align="right">
+				<a href="/pessoas">
+					<button type="button" class="btn btn-primary">
+			  			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar	
+					</button>
+				</a>
+				<button type="submit" class="btn btn-primary">
+			  		<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Salvar
+				</button>
+			</td>
+		</tr>
+		</table>
+	</form>
+</body>
+	<script>
+		$(document).ready(function(){
+		    $('#telefone').mask('(00) 0000-0000');
+		    $('#celular').mask('(00) 00000-0000');
+		    $('#foneComercial').mask('(00) 0000-0000');
+		    $('#cpf').mask('000.000.000-00');
+		    $('#cep').mask('00.000-000');
+		});
+	</script>
+</html>
+

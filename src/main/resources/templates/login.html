@@ -1,0 +1,49 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		.form-control{
+			margin:10px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+<h1 style="text-align:center">SGC</h1>
+
+<form method="post">
+<table align="center">
+	<tr height=20px >
+	</tr>
+	<tr>
+		<td>Login: </td> <td><input class="form-control" type="text" value="" name="login"/></td>
+	</tr>
+	<tr>
+		<td>Senha: </td>     <td><input class="form-control" type="password" value="" name="senha"/></td>
+	</tr>
+	<tr height="20px">
+	
+	</tr>
+	<tr>
+		<td></td>   
+					<td style="text-align:center">
+						<button type="submit" class="btn btn-primary" >
+			  				<span class="glyphicons glyphicons-log-in" aria-hidden="true"></span> Entrar
+						</button>
+					</td>
+	</tr>
+</table>
+</form>	
+
+<div style="margin:20px; text-align:center">
+	<span th:if="${erroLogin}" class="alert alert-danger">Usuário ou senha inválidos.</span>
+</div>
+
+</div>
+</body>
+</html>
