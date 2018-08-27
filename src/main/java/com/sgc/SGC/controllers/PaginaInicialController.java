@@ -8,6 +8,8 @@ public class PaginaInicialController {
 
 	@RequestMapping("/paginaInicial")
 	public String paginaInicial() {
-		return "/paginaInicial";		
+		return "/paginaInicial";	
+		
 	}
+	
 }

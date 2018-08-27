@@ -18,7 +18,7 @@ public class ImplementsUserDetailsService implements UserDetailsService{
 
 	@Autowired
 	private UsuarioRepository ur;
-//testes
+
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		Usuario usuario = ur.findByLogin(login);

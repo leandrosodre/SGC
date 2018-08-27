@@ -1,5 +1,7 @@
 package com.sgc.SGC.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,5 +15,8 @@ public interface UsuarioRepository extends CrudRepository<Usuario, String>{
 	
 	@Query("select u from Usuario u where u.login = ?1")
 	Usuario findByLogin(String login);
+	
+	@Query("select u from Usuario u where u.nivel = 3 and u.status = 'A'")
+	List<Usuario> findAllMedicos();
 
 }

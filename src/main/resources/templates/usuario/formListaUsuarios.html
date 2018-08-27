@@ -25,16 +25,18 @@
 	<div class="container">
 		<table class="table">
 			<thead>
+				<td><b>Nome</b></td>
 				<td><b>Login</b></td>
 				<td><b>Nivel</b></td>
 				<td><b>Status</b></td>
 				<td><b>Disponivel</b></td>
 			</thead>
 			<tr th:each="usuario : ${usuarios}">
+					<td><span th:text="${usuario.nomeUsuario}"></span></td>
 					<td><span th:text="${usuario.login}"></span></td>
 					<td th:switch="${usuario.nivel}">
 						<span th:case=1>Administrador</span>
-						<span th:case=2>Recepcionsta</span>
+						<span th:case=2>Recepcionista</span>
 						<span th:case=3>Médico</span>
 					</td>
 					<td><span th:text="${usuario.status} == 'I' ? Inativo : Ativo"></span></td>

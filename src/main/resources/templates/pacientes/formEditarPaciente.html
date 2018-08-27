@@ -18,15 +18,15 @@
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 </head>
 
-<body>
-	<h1>Cadastro de Pessoas</h1>
+<body th:each="paciente : ${paciente}">
+	<h1>Cadastro de Pacientes</h1>
 	<form class ="container" method="post">
 		<table>
 		<tr>
-			<td>Nome Completo:</td> <td><input class="form-control" type="text" value="" name="nomeCompleto"/></td>
+			<td>Nome Completo:</td> <td><input class="form-control" type="text" th:value="${paciente.nomeCompleto}" name="nomeCompleto"/></td>
 		</tr>
 		<tr>
-		<td>CPF:</td> 			<td><input class="form-control" id="cpf" type="text" value="" name="cpf"/></td>
+		<td>CPF:</td> 			<td><input class="form-control" id="cpf" type="text" th:value="${paciente.cpf}" name="cpf"/></td>
 		</tr>
 		<tr>
 		<td>Sexo:</td> 		<td>
@@ -37,19 +37,19 @@
 		   	  				</td>
 		</tr>
 		<tr>
-			<td>Data de Nascimento:</td> 	<td><input class="form-control" type="date" value="" name="dataNascimento"/></td>
+			<td>Data de Nascimento:</td> 	<td><input class="form-control" type="date" th:value="${paciente.dataNascimento}" name="dataNascimento"/></td>
 		</tr>
 		<tr>
-			<td>E-mail:</td> 	<td><input class="form-control" type="text" value="" name="email"/></td>
+			<td>E-mail:</td> 	<td><input class="form-control" type="text" th:value="${paciente.email}" name="email"/></td>
 		</tr>
 		<tr>
-			<td>Telefone:</td> 				<td><input id="telefone" class="form-control" type="text" value ="" name="telefone"/></td>
+			<td>Telefone:</td> 				<td><input id="telefone" class="form-control" type="text" th:value ="${paciente.telefone}" name="telefone"/></td>
 		</tr>
 		<tr>
-			<td>Celular:</td>  				<td><input id="celular" class="form-control" type="text" value ="" name="celular"/></td>
+			<td>Celular:</td>  				<td><input id="celular" class="form-control" type="text" th:value ="${paciente.celular}" name="celular"/></td>
 		</tr>
 		<tr>
-			<td>Telefone Comercial:</td>    <td><input id="foneComercial" class="form-control" type="text" value ="" name="foneComercial"/></td>
+			<td>Telefone Comercial:</td>    <td><input id="foneComercial" class="form-control" type="text" th:value ="${paciente.foneComercial}" name="foneComercial"/></td>
 		</tr>
 		<tr>
 			<td>Estado Civil:</td>		<td>
@@ -69,25 +69,25 @@
 			<td align="center">Endereço:</td>
 		</tr>
 		<tr>
-			<td>Rua:</td> 				<td><input class="form-control" type="text" value="" name="endereco"/></td>
+			<td>Rua:</td> 				<td><input class="form-control" type="text" th:value="${paciente.endereco}" name="endereco"/></td>
 		</tr>
 		<tr>
-			<td>Número:</td>			<td><input class="form-control" type="number" value=0 name="numero"/></td>
+			<td>Número:</td>			<td><input class="form-control" type="number" th:value="${paciente.numero}" name="numero"/></td>
 		</tr>
 		<tr>
-			<td>Complemento:</td>		<td><input class="form-control" type="text"   value="" name="complemento"/></td>
+			<td>Complemento:</td>		<td><input class="form-control" type="text"   th:value="${paciente.complemento}" name="complemento"/></td>
 		</tr>
 		<tr>
-			<td>Bairro:</td>			<td><input class="form-control" type="text"   value="" name="bairro"/></td>
+			<td>Bairro:</td>			<td><input class="form-control" type="text"   th:value="${paciente.bairro}" name="bairro"/></td>
 		</tr>
 		<tr>
-			<td>Cidade:</td>			<td><input class="form-control" type="text"   value="" name="cidade"/></td>
+			<td>Cidade:</td>			<td><input class="form-control" type="text"   th:value="${paciente.cidade}" name="cidade"/></td>
 		</tr>
 		<tr>
-			<td>Estado:</td>			<td><input class="form-control" type="text"   value="" name="estado"/></td>
+			<td>Estado:</td>			<td><input class="form-control" type="text"   th:value="${paciente.estado}" name="estado"/></td>
 		</tr>
 		<tr>
-			<td>CEP:</td>				<td><input id="cep" class="form-control" type="text" value="" name="cep"/></td>
+			<td>CEP:</td>				<td><input id="cep" class="form-control" type="text" th:value="${paciente.cep}" name="cep"/></td>
 		</tr>
 		<tr height="20px">
 		
@@ -96,7 +96,7 @@
 			<td>
 			</td> 
 			<td align="right">
-				<a href="/pessoas">
+				<a href="/pacientes">
 					<button type="button" class="btn btn-primary">
 			  			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar	
 					</button>

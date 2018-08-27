@@ -20,6 +20,14 @@ public class Role implements GrantedAuthority{
 	@ManyToMany
 	private List<Usuario> usuarios;
 	
+	public Role() {
+	}
+	
+	public Role(String nome) {
+		this.nomeRole = nome;
+	}
+
+
 	@Override
 	public String getAuthority() {
 		return this.nomeRole;

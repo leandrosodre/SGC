@@ -19,7 +19,7 @@ public class Agenda {
 		private char   resultado;
 		
 		@ManyToOne
-		private Pessoa pessoa;
+		private Paciente paciente;
 		
 		@ManyToOne
 		private Usuario usuario;
@@ -49,12 +49,12 @@ public class Agenda {
 			this.resultado = resultado;
 		}
 
-		public Pessoa getPessoa() {
-			return pessoa;
+		public Paciente getPaciente() {
+			return paciente;
 		}
 
-		public void setPessoa(Pessoa pessoa) {
-			this.pessoa = pessoa;
+		public void setPaciente(Paciente paciente) {
+			this.paciente = paciente;
 		}
 
 		public Usuario getUsuario() {

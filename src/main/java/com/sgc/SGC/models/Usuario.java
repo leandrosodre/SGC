@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
@@ -34,7 +33,8 @@ public class Usuario implements Serializable, UserDetails{
 	
 	@Size(max = 20)
 	private String login;
-	
+	private String nomeUsuario;
+	private String email;
 	private String senha;
 	private Date dataInicio;
 	private int  nivel; // 1- Administrador / 2- Recepcionista / 3- Medico
@@ -63,9 +63,7 @@ public class Usuario implements Serializable, UserDetails{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	@OneToOne
-	private Pessoa pessoa;
-	
+
 	@OneToMany
 	private List<Horarios> horarios;
 	
@@ -94,12 +92,6 @@ public class Usuario implements Serializable, UserDetails{
 	public void setDisponivel(char disponivel) {
 		this.disponivel = disponivel;
 	}
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
 	public String getLogin() {
 		return login;
 	}
@@ -120,8 +112,7 @@ public class Usuario implements Serializable, UserDetails{
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.roles;
 	}
 	@Override
 	public String getPassword() {
@@ -155,5 +146,17 @@ public class Usuario implements Serializable, UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
 	}
 }

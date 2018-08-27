@@ -21,6 +21,19 @@
 <form method="post">
 	<table>
 			<tr>
+			<td>Médico: </td> <td>
+									<select class="form-control" name="usuario.idUsuario">
+										<option value = "0" th:text="SELECIONE"></option>
+										<option th:each="usuario : ${usuarios}"
+										        th:value="${usuario.idUsuario}"
+										        th:text="${usuario.nomeUsuario}"/>
+									
+									</select>
+							  </td>
+			</tr>
+			<tr height=10px>
+			</tr>
+			<tr>
 			<td width=130px>Dia da semana: </td> <td>
 										<select class="form-control" name="diaSemana">
 												<option th:value = 2>Segunda-feira</option>

@@ -21,10 +21,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable().authorizeRequests()
-		.antMatchers(HttpMethod.GET, "/").permitAll()
-		.anyRequest().authenticated()
-		.and().formLogin().permitAll()
-		.and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+			.antMatchers(HttpMethod.GET, "/").permitAll()
+			.antMatchers(HttpMethod.GET, "/usuarios").hasRole("ADMIN")
+			.antMatchers(HttpMethod.GET, "/cadastrarUsuario").hasRole("ADMIN")
+			.anyRequest().authenticated()
+			.and()
+		.formLogin()
+			.loginPage("/login")
+			.defaultSuccessUrl("/paginaInicial")
+			.failureForwardUrl("/login")
+			.permitAll()
+			.and()
+		.logout()
+			.permitAll()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
 	}
 	
 	@Override
