@@ -2,11 +2,15 @@ package com.sgc.SGC.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+
+@Entity
 public class Agenda {
 	
 		private static final long serialVersionUID = 1L;
@@ -16,15 +20,36 @@ public class Agenda {
 		public long    idAgenda;
 		
 		private Date   dataPrevista;
-		private char   resultado;
+		
+		@Column(nullable = true)
+		private String   resultado;
 		
 		@ManyToOne
 		private Paciente paciente;
 		
 		@ManyToOne
-		private Usuario usuario;
+		public Usuario usuarioMarcador;
+		
+		@ManyToOne
+		public Usuario usuarioMedico;
 
 		
+		public Usuario getUsuarioMarcador() {
+			return usuarioMarcador;
+		}
+
+		public void setUsuarioMarcador(Usuario usuarioMarcador) {
+			this.usuarioMarcador = usuarioMarcador;
+		}
+
+		public Usuario getUsuarioRealizador() {
+			return usuarioMedico;
+		}
+
+		public void setUsuarioRealizador(Usuario usuarioMedico) {
+			this.usuarioMedico = usuarioMedico;
+		}
+
 		public long getIdAgenda() {
 			return idAgenda;
 		}
@@ -41,11 +66,11 @@ public class Agenda {
 			this.dataPrevista = dataPrevista;
 		}
 
-		public char getResultado() {
+		public String getResultado() {
 			return resultado;
 		}
 
-		public void setResultado(char resultado) {
+		public void setResultado(String resultado) {
 			this.resultado = resultado;
 		}
 
@@ -55,14 +80,6 @@ public class Agenda {
 
 		public void setPaciente(Paciente paciente) {
 			this.paciente = paciente;
-		}
-
-		public Usuario getUsuario() {
-			return usuario;
-		}
-
-		public void setUsuario(Usuario usuario) {
-			this.usuario = usuario;
 		}
 
 		public static long getSerialversionuid() {
