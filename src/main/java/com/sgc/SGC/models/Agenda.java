@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Agenda {
@@ -19,6 +20,7 @@ public class Agenda {
 		@GeneratedValue(strategy=GenerationType.AUTO)
 		public long    idAgenda;
 		
+		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 		private Date   dataPrevista;
 		
 		@Column(nullable = true)
@@ -42,11 +44,11 @@ public class Agenda {
 			this.usuarioMarcador = usuarioMarcador;
 		}
 
-		public Usuario getUsuarioRealizador() {
+		public Usuario getUsuarioMedico() {
 			return usuarioMedico;
 		}
 
-		public void setUsuarioRealizador(Usuario usuarioMedico) {
+		public void setUsuarioMedico(Usuario usuarioMedico) {
 			this.usuarioMedico = usuarioMedico;
 		}
 
