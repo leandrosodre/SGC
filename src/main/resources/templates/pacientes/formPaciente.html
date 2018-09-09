@@ -22,8 +22,13 @@
 	<h1>Cadastro de Pacientes</h1>
 	<form class ="container" method="post">
 		<table>
+		<tr><td colspan="2">
+			<div th:if="${erro}" class="alert alert-danger">    
+	    		<div th:text="${mensagem}"></div>
+	    	</div></td>
+    	</tr>	
 		<tr>
-			<td>Nome Completo:</td> <td><input class="form-control" type="text" value="" name="nomeCompleto"/></td>
+			<td>Nome Completo:</td> <td><input id="nome" class="form-control" type="text" value="" name="nomeCompleto"/></td>
 		</tr>
 		<tr>
 		<td>CPF:</td> 			<td><input class="form-control" id="cpf" type="text" value="" name="cpf"/></td>
@@ -116,6 +121,30 @@
 		    $('#foneComercial').mask('(00) 0000-0000');
 		    $('#cpf').mask('000.000.000-00');
 		    $('#cep').mask('00.000-000');
+		
+		    var cpf = $("#cpf");
+			//VALIDAR CPF		    
+			cpf.on("blur", function(){
+				var valorCpf = cpf.val();
+
+				if (valorCpf.length < 14) {
+					cpf.css({ "border": '#CC0000 1px solid'});
+				}else{
+					cpf.removeAttr("style");
+				}
+			});
+			
+			var nome = $("#nome")
+			//VALIDAR NOME
+			nome.on("blur", function(){
+				var valorNome = nome.val();
+
+				if (valorNome.length < 1) {
+					nome.css({ "border": '#CC0000 1px solid'});
+				}else{
+					nome.removeAttr("style");
+				}
+			});
 		});
 	</script>
 </html>

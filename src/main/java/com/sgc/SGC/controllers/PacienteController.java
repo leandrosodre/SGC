@@ -2,6 +2,7 @@ package com.sgc.SGC.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Paciente;
 import com.sgc.SGC.repository.PacienteRepository;
+import com.sgc.SGC.validacoes.ValidarPaciente;
 
 @Controller
 public class PacienteController {
@@ -23,9 +25,18 @@ public class PacienteController {
 	}
 	
 	@RequestMapping(value="/cadastrarPaciente", method=RequestMethod.POST)
-	public String form(Paciente paciente) {
-		pr.save(paciente);
-		return "redirect:/pacientes";
+	public String form(Paciente paciente, Model model) {
+		ValidarPaciente validar = new ValidarPaciente(paciente);
+		boolean pacienteValido = validar.pacienteValido();
+		
+		if ( !pacienteValido ) {
+			model.addAttribute("erro", true);
+			model.addAttribute("mensagem", validar.getMensagem());
+			return "pacientes/formPaciente";
+		}else {
+			pr.save(paciente);
+			return "redirect:/pacientes";
+		}
 	}
 	
 	@RequestMapping("/pacientes")
