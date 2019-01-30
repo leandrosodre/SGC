@@ -43,6 +43,9 @@
         <div th:if="${erroLogin}" class="alert alert-danger">    
                     Usuário ou senha inválidos.
         </div>
+    	<div th:if="${usuarioInativo}" class="alert alert-danger">    
+                    Usuário inativo.
+        </div>
     </div>
   </body>
 </html>

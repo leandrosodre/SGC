@@ -25,6 +25,10 @@ public class ImplementsUserDetailsService implements UserDetailsService{
 		
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Usuário não encontrado.");
+		} else {
+			if (usuario.getStatus() == 'I'){ //se estiver inativo
+				throw new UsernameNotFoundException("Usuário Inativo.");
+			}
 		}
 		
 		return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, usuario.getAuthorities());

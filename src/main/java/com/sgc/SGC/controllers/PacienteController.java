@@ -1,5 +1,7 @@
 package com.sgc.SGC.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sgc.SGC.models.Agenda;
 import com.sgc.SGC.models.Paciente;
+import com.sgc.SGC.repository.AgendaRepository;
 import com.sgc.SGC.repository.PacienteRepository;
 import com.sgc.SGC.validacoes.ValidarPaciente;
 
@@ -18,6 +22,9 @@ public class PacienteController {
 	
 	@Autowired
 	private PacienteRepository pr;
+	
+	@Autowired
+	private AgendaRepository ar;
 	
 	@RequestMapping(value="/cadastrarPaciente", method=RequestMethod.GET)
 	public String form() {
@@ -62,10 +69,17 @@ public class PacienteController {
 	}
 	
     @RequestMapping(value="/pacientes/delete/{idPaciente}")
-    public String excluirPaciente(@RequestParam("idPaciente") long idPaciente) {
+    public String excluirPaciente(@RequestParam("idPaciente") long idPaciente, Model model) {
     	Paciente paciente = pr.findByIdPaciente(idPaciente);
-        pr.delete(paciente);
-        return "redirect:/pacientes";
+    	List<Agenda> agenda = ar.findAllAgendasDoPaciente(idPaciente);
+    	if (agenda.isEmpty()) {
+	        pr.delete(paciente);
+	        model.addAttribute("msg", "Registro Excluido com sucesso.");
+	        return "redirect:/pacientes";
+    	}
+    	model.addAttribute("msg", "Falha ao excluir registro.");
+    	return "redirect:/pacientes";
+    	
     }
 	
 }

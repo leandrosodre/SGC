@@ -23,5 +23,5 @@ public class IndexController {
 	public String erroLogin(Model model) {
 		model.addAttribute("erroLogin", true);
 		return "login";	
-	}
+	}	
 }
