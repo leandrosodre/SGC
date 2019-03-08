@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Agenda;
@@ -62,6 +65,30 @@ public class AgendaController {
 		mv.addObject("agendas", agenda);
 		return mv;
 	}
-
 	
+	@RequestMapping(value="/agenda/{idAgenda}", method=RequestMethod.POST)
+	public String atualizarAgenda(Agenda agenda) {
+		ar.save(agenda);
+		return "redirect:/agenda";
+	}
+	
+	
+	@RequestMapping("/agenda/{idAgenda}")
+	public ModelAndView editarAgenda(@PathVariable("idAgenda") long idAgenda) {
+		Agenda agenda = ar.findByIdAgenda(idAgenda);		
+		List<Usuario> usuarios = ur.findAllMedicos();
+		Iterable<Paciente> pacientes 	= pr.findAll();
+		ModelAndView mv = new ModelAndView("agendamento/formEditarAgenda");
+		mv.addObject("agenda", agenda);
+		mv.addObject("usuarios", usuarios);
+		mv.addObject("pacientes", pacientes);
+		return mv;
+	}
+	
+    @RequestMapping(value="/agenda/delete/{idAgenda}")
+    public String excluirAgenda(@RequestParam("idAgenda") long idAgenda) {
+    	Agenda agenda = ar.findByIdAgenda(idAgenda);
+        ar.delete(agenda);
+        return "redirect:/agenda";
+    }
 }

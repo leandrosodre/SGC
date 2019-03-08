@@ -13,6 +13,10 @@
 <body>
 <h1>SGC</h1>
 
+<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
+  <h3><a href="/">Realizar Consulta</a></h3>
+</div>
+
 <h3><a href="/pacientes">Pacientes  </a></h3>
 <h3><a href="/agenda">Agendamento de Consultas</a></h3>
 <div sec:authorize="hasRole('ROLE_ADMIN')">
