@@ -27,6 +27,13 @@
   <h3><a href="/horarios">Horários</a></h3>
 </div>
 
+<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
+  <h3><a href="/medicamentos">Medicamentos</a></h3>
+</div>
+<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
+  <h3><a href="/exame">Exames</a></h3>
+</div>
+
 <h3><a href="/logout">Logout</a></h3>
 	
 </body>

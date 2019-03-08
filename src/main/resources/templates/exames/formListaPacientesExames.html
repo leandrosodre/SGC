@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+</head>
+
+<body>
+	<h1>Lista de pacientes</h1>	
+	<div>
+	<a href="/solicitarExame">
+		<button type="button" class="btn btn-primary">
+	  		<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Solicitar exame
+		</button>
+	</a>
+	<a href="/paginaInicial">
+		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
+	</a>
+	</div>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<td><b>Paciente</b></td>
+				<td><b>Telefone</b></td>
+			</thead>
+			<tr th:each="paciente : ${pacientes}">
+					<td><span th:text="${paciente.nomeCompleto}"></span></td>
+					<td><span th:text="${paciente.telefone}"></span></td>
+					<td width="10px">
+						<a th:href="${(#mvc.url('EC#consultaExames').arg(0, paciente.idPaciente)).build()}">
+							<button type="button" class="btn btn-primary">
+				  				<span class="glyphicon glyphicon-notes" aria-hidden="true"></span>
+							</button>
+						</a>
+					</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
+

@@ -67,7 +67,9 @@ public class AgendaController {
 	
 	@RequestMapping(value="/agenda/{idAgenda}", method=RequestMethod.POST)
 	public String atualizarAgenda(Agenda agenda) {
-		//teste
+		String nomeUsuario 		= new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioMarcador = ur.findByLogin(nomeUsuario);
+		agenda.setUsuarioMarcador(usuarioMarcador);
 		ar.save(agenda);
 		return "redirect:/agenda";
 	}

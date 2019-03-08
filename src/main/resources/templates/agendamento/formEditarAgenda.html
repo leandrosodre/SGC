@@ -22,7 +22,7 @@
 <table>
 	<tr>
 		<td>Paciente: </td><td>									
-								<select class="form-control" name="agenda.paciente.idPaciente">
+								<select class="form-control" name="paciente.idPaciente">
 									<option value = "0" th:text="SELECIONE"></option>
 									<option th:each="paciente : ${pacientes}"
 									        th:value="${paciente.idPaciente}"
@@ -34,7 +34,7 @@
 	</tr>
 	<tr>
 		<td>Médico: </td> <td>
-								<select class="form-control" name="agenda.usuarioMedico.idUsuario">
+								<select class="form-control" name="usuarioMedico.idUsuario">
 										<option value = "0" th:text="SELECIONE"></option>
 										<option th:each="usuario : ${usuarios}"
 										        th:value="${usuario.idUsuario}"
