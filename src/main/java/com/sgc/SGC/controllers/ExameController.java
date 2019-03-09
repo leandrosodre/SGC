@@ -59,10 +59,14 @@ public class ExameController {
 		return mv;
 	}
 	
-	@RequestMapping("/exame/{idExame}")
+	@RequestMapping("/exame/detalhaExame/{idExame}")
 	public ModelAndView detalhaExame(@PathVariable("idExame") long idExame) {
 		Exame exame = er.findByIdExame(idExame);		
 		ModelAndView mv = new ModelAndView("exames/formDetalhesExame");
+		Iterable<TipoExame> tipoExames = ter.findAll();
+		Iterable<Paciente> pacientes = pr.findAll();
+		mv.addObject("tipoExames", tipoExames);
+		mv.addObject("pacientes", pacientes);
 		mv.addObject("exame", exame);
 		return mv;
 	}
@@ -87,6 +91,7 @@ public class ExameController {
 		long idTipoExame = exame.getTipoExame().getIdTipoExame();
 		TipoExame tipoExame = ter.findByIdTipoExame(idTipoExame);
 		exame.setTipoExame(tipoExame);
+		exame.setResultado(null);
 		er.save(exame);
 		return "redirect:/exame";
 	}

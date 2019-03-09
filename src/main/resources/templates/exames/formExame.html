@@ -5,14 +5,19 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="js/jquery.mask.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../../js/jquery.mask.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
 	<style>
 		td{
 			padding:4px;
 		}
 		h1{
 			padding:10px;
+		}
+		#descricao{
+			width:400px;
+			height:250px;
+			resize:none;
 		}
 	</style>
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
@@ -50,10 +55,7 @@
 												</td>
 		</tr>
 		<tr>
-			<td>Descricao:</td> 			<td><input class="form-control" type="text" name="descricao"/></td>
-		</tr>
-		<tr>
-			<td>Resultado:</td> 			<td><input class="form-control" type="text" name="resultado"/></td>
+			<td>Descricao:</td> 			<td><textarea class="form-control" type="text" id="descricao" name="descricao"></textarea></td>
 		</tr>
 		<tr height="20px">
 		

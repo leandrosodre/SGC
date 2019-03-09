@@ -15,7 +15,7 @@ public interface ExameRepository extends CrudRepository<Exame, String>{
 	@Query("select a from Exame a where a.paciente.idPaciente = ?1")
 	List<Exame> findAllExamesDoPaciente(long idPaciente);
 	
-	@Query("select a.paciente.idPaciente from Exame a where a.paciente.idPaciente is not null")
+	@Query("select a.paciente.idPaciente from Exame a where a.paciente.idPaciente is not null group by a.paciente.idPaciente")
 	List<Long> findAllPacientesComExame();
 	
 }
