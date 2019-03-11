@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Exame;
@@ -94,5 +95,35 @@ public class ExameController {
 		exame.setResultado(null);
 		er.save(exame);
 		return "redirect:/exame";
+	}
+	
+    @RequestMapping("/buscarExames")
+	public ModelAndView buscarExames(@RequestParam("nome") String nome) {
+    	
+    	ModelAndView mv = new ModelAndView("exames/formListaPacientesExames");   	
+    	List<Long> idsPacientes;
+    	List<Paciente> pacientes;
+    	
+    	if (nome != "") {
+    		idsPacientes = er.findLikePacientesComExame(nome);
+    		pacientes = new ArrayList<Paciente>();
+    		for (int i = 0; i < idsPacientes.size(); i++) {
+    			Long id = idsPacientes.get(i);
+    			Paciente paciente = new Paciente();
+    			paciente = pr.findByIdPaciente(id);
+    			pacientes.add(paciente);
+    		}
+    	} else {
+    		idsPacientes = er.findAllPacientesComExame();
+    		pacientes = new ArrayList<Paciente>();
+    		for (int i = 0; i < idsPacientes.size(); i++) {
+    			Long id = idsPacientes.get(i);
+    			Paciente paciente = new Paciente();
+    			paciente = pr.findByIdPaciente(id);
+    			pacientes.add(paciente);
+    		}
+    	}
+    	mv.addObject("pacientes", pacientes);
+		return mv;
 	}
 }

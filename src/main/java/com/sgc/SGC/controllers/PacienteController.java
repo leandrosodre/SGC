@@ -79,7 +79,23 @@ public class PacienteController {
     	}
     	model.addAttribute("msg", "Falha ao excluir registro.");
     	return "redirect:/pacientes";
-    	
     }
 	
+    @RequestMapping("/buscarPacientes")
+	public ModelAndView buscarPacientes(@RequestParam("cpf") String cpf,
+										@RequestParam("nome") String nomePaciente) {
+    	ModelAndView mv = new ModelAndView("pacientes/formListaPacientes");   	
+    	Iterable<Paciente> pacientes;
+    	if (cpf != "") {
+    		pacientes = pr.findByCPFLike(cpf);
+    	} else if (nomePaciente != "") {
+    		pacientes = pr.findByName(nomePaciente);
+    	} else {
+    		pacientes = pr.findAll();
+    	}
+    	mv.addObject("pacientes", pacientes);
+		return mv;
+	}
+	
+    
 }

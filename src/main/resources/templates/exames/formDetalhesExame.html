@@ -47,7 +47,7 @@
 										</select></td>
 		</tr>
 		<tr>
-			<td>Data do Exame:</td> 		<td><span class="form-control" id="data" type="datetime-local" th:text="${exame.dataExame}" name="dataExame" disabled/></td>
+			<td>Data do Exame:</td> 		<td><span class="form-control" id="data" type="datetime-local" th:text="${exame.dataExame}" name="dataExame" readonly/></td>
 		</tr>
 		<tr>
 			<td>Tipo do Exame:</td> 			<td><select class="form-control" name="tipoExame.idTipoExame" disabled="disabled">
@@ -61,10 +61,10 @@
 												</td>
 		</tr>
 		<tr>
-			<td>Descricao:</td> 			<td><textarea class="form-control" th:text="${exame.descricao}" type="text" id="descricao" name="descricao" disabled></textarea></td>
+			<td>Descricao:</td> 			<td><textarea class="form-control" th:text="${exame.descricao}" type="text" id="descricao" name="descricao" readonly></textarea></td>
 		</tr>
 		<tr>
-			<td>Resultado:</td> 			<td><span class="form-control" th:text="${exame.resultado}" type="text" name="resultado" disabled/></td>
+			<td>Resultado:</td> 			<td><span class="form-control" th:text="${exame.resultado}" type="text" name="resultado" readonly/></td>
 		</tr>
 		<tr height="20px">
 		
