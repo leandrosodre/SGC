@@ -1,5 +1,6 @@
 package com.sgc.SGC.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,4 +94,39 @@ public class AgendaController {
         ar.delete(agenda);
         return "redirect:/agenda";
     }
+    
+    @RequestMapping("/buscarAgendas")
+	public ModelAndView buscarAgendas(@RequestParam("nomePaciente") String nomePaciente,
+									  @RequestParam("nomeMedico") String nomeMedico) {
+    	
+    	ModelAndView mv = new ModelAndView("agendamento/formAgenda");   
+    	
+    	
+    	Iterable<Paciente> pacientes;
+    	Iterable<Usuario> medicos;
+    	List<Agenda> agendas = new ArrayList<Agenda>();
+    	
+    	if (nomePaciente != "") {
+    		pacientes = pr.findByName(nomePaciente);
+    		for (Paciente paciente : pacientes) {
+    			List<Agenda> agendasPaciente = ar.findAllAgendasDoPaciente(paciente.idPaciente);
+    			agendas.addAll(agendasPaciente);
+    		}
+    	} else if (nomeMedico != "") {
+    		medicos = ur.findAllByName(nomeMedico);
+    		for (Usuario medico : medicos) {
+    			List<Agenda> agendasMedico = ar.findAllAgendasDoMedico(medico.getIdUsuario());
+    			agendas.addAll(agendasMedico);
+    		}
+    	} else {
+    		Iterable<Agenda> agenda = ar.findAll();
+    		mv.addObject("agendas", agenda);
+    	}
+    	
+    	if (agendas.size() > 0) {
+    		mv.addObject("agendas", agendas);
+    	}
+    	
+		return mv;
+	}
 }

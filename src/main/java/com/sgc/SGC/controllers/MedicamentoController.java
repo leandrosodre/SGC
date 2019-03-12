@@ -59,4 +59,24 @@ public class MedicamentoController {
     	return "redirect:/medicamentos";
     	
     }
+    
+    @RequestMapping("/buscarMedicamentos")
+	public ModelAndView buscarMedicamentos(@RequestParam("fabrica") String fabrica,
+										@RequestParam("generico") String generico,
+										@RequestParam("fabricante") String fabricante) {
+    	
+    	ModelAndView mv = new ModelAndView("medicamentos/formListaMedicamentos");   	
+    	Iterable<Medicamento> medicamentos;
+    	if (fabrica != "") {
+    		medicamentos = mr.findByNomeFabricaLike(fabrica);
+    	} else if (generico != "") {
+    		medicamentos = mr.findByNomeGenericoLike(generico);
+    	} else if (fabricante != ""){
+    		medicamentos = mr.findByNomeFabricanteLike(fabricante);
+    	} else {
+    		medicamentos = mr.findAll();
+    	}
+    	mv.addObject("medicamentos", medicamentos);
+		return mv;
+	}
 }

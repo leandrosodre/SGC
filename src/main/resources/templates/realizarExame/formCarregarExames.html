@@ -32,7 +32,7 @@
 				<td><b>Nome Paciente</b></td>
 				<td><b>Tipo de Exame</b></td>
 				<td><b>Data do Exame</b></td>
-				<td><b>Detalhes</b></td>
+				<td><b>Abrir</b></td>
 			</thead>
 			<tr th:each="exame : ${exames}">
 					<td><span th:text="${exame.idExame}"></span></td>
@@ -40,9 +40,9 @@
 					<td><span th:text="${exame.tipoExame.tipoExame}"></span></td>
 					<td><span class="data" th:text="${exame.dataExame}"></span></td>
 					<td width="10px">
-						<a th:href="${(#mvc.url('EC#detalhaExame').arg(0, exame.idExame)).build()}">
+						<a th:href="${(#mvc.url('EC#carregarExame').arg(0, exame.idExame)).build()}">
 							<button type="button" class="btn btn-primary">
-				  				<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+				  				<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
 							</button>
 						</a>
 					</td>

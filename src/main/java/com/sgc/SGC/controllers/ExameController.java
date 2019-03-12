@@ -88,7 +88,6 @@ public class ExameController {
 	
 	@RequestMapping(value="/solicitarExame", method=RequestMethod.POST)
 	public String solicitarExame(Exame exame) {
-		System.out.println("TESTE");
 		long idTipoExame = exame.getTipoExame().getIdTipoExame();
 		TipoExame tipoExame = ter.findByIdTipoExame(idTipoExame);
 		exame.setTipoExame(tipoExame);
@@ -126,4 +125,35 @@ public class ExameController {
     	mv.addObject("pacientes", pacientes);
 		return mv;
 	}
+    
+    @RequestMapping("/buscarTodosExames")
+	public ModelAndView buscarTodosExames(Exame exame) {
+		ModelAndView mv = new ModelAndView("realizarExame/formCarregarExames");
+		List<Exame> exames = er.findAllExamesPendentes();
+		mv.addObject("exames", exames);
+		return mv;
+	}
+    
+    @RequestMapping(value="/carregarExame/{idExame}", method=RequestMethod.GET)
+	public ModelAndView carregarExame(@PathVariable("idExame") long idExame) {
+    	ModelAndView mv = new ModelAndView("realizarExame/formRealizarExame");
+		Exame exame = er.findByIdExame(idExame);
+		Iterable<TipoExame> tipoExames = ter.findAll();
+		Iterable<Paciente> pacientes = pr.findAll();
+		mv.addObject("tipoExames", tipoExames);
+		mv.addObject("pacientes", pacientes);
+		mv.addObject("exame", exame);
+		mv.addObject("exame", exame);
+		return mv;
+	}
+    
+    @RequestMapping(value="/carregarExame/{idExame}", method=RequestMethod.POST)
+	public String salvarRealizarExame(@PathVariable("idExame") long idExame, Exame exame) {
+		Exame exameValores = er.findByIdExame(idExame);
+    	exameValores.setResultado(exame.getResultado());
+		er.save(exameValores);
+		return "redirect:/buscarTodosExames";
+	}
+    
+    
 }

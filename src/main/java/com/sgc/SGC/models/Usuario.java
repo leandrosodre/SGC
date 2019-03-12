@@ -37,9 +37,8 @@ public class Usuario implements Serializable, UserDetails{
 	private String email;
 	private String senha;
 	private Date dataInicio;
-	private int  nivel; // 1- Administrador / 2- Recepcionista / 3- Medico
+	private int  nivel; // 1- Administrador / 2- Recepcionista / 3- Medico / 4- Laboratorio
 	private char status; // A- ativo / I- Inativo
-	private char disponivel; //D - Disponivel / I- Indisponivel
 	
 	@ManyToMany
 	@JoinTable(name= "usuario_roles",joinColumns = @JoinColumn(
@@ -85,12 +84,6 @@ public class Usuario implements Serializable, UserDetails{
 	}
 	public void setStatus(char status) {
 		this.status = status;
-	}
-	public char getDisponivel() {
-		return disponivel;
-	}
-	public void setDisponivel(char disponivel) {
-		this.disponivel = disponivel;
 	}
 	public String getLogin() {
 		return login;

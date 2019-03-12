@@ -7,10 +7,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+	</style>
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div id="pagina">
 	<h1>Lista de Usuarios</h1>
 	<div>
 	<a href="/cadastrarUsuario">
@@ -22,6 +40,52 @@
 		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
 	</a>
 	</div>
+	<div>
+		<table class="table table-bordered" id="td">
+			<tr><td colspan="6" id="filtro"><b>Filtros</b></td></tr>
+			<tr>
+				<td style="vertical-align: middle" id="pad">
+					<b>Nome: </b>
+				</td> 
+				<td id="pad">
+					<input id="nome" class="form-control" type="text"/>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Nivel: </b>
+				</td> 
+				<td id="pad">
+					<select id="nivel" class="form-control" name="nivel">
+						<option value = 0 selected>SELECIONE</option>
+						<option value = 1>Administrador</option>
+						<option value = 2>Recepcionista</option>
+						<option value = 3>Médico</option>
+						<option value = 4>Laboratório</option>
+					</select>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Status: </b>
+				</td> 
+				<td id="pad">
+					<select id="status" class="form-control" name="status">	
+						<option value="" selected>SELECIONE</option>
+						<option value="'A'">Ativo</option>
+						<option value="'I'">Inativo</option>
+  	  				</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align:right" id="pad">
+					<a onclick="busca()">
+						<button type="button" class="btn btn-primary">
+					  			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+						</button>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<div class="container">
 		<table class="table">
 			<thead>
@@ -29,7 +93,6 @@
 				<td><b>Login</b></td>
 				<td><b>Nivel</b></td>
 				<td><b>Status</b></td>
-				<td><b>Disponivel</b></td>
 			</thead>
 			<tr th:each="usuario : ${usuarios}">
 					<td><span th:text="${usuario.nomeUsuario}"></span></td>
@@ -38,9 +101,9 @@
 						<span th:case=1>Administrador</span>
 						<span th:case=2>Recepcionista</span>
 						<span th:case=3>Médico</span>
+						<span th:case=4>Laboratório</span>
 					</td>
 					<td><span th:text="${usuario.status} == 'I' ? Inativo : Ativo"></span></td>
-					<td><span th:text="${usuario.disponivel} == 'I' ? Indisponível : Disponível"></span></td>
 					<td width="10px">
 						<a th:href="${(#mvc.url('UC#editarUsuario').arg(0, usuario.idUsuario)).build()}">
 							<button type="button" class="btn btn-primary">
@@ -58,6 +121,16 @@
 			</tr>
 		</table>
 	</div>
+</div>
 </body>
+<script>
+	function busca(){
+		var nome 	= $("#nome").val();
+		var nivel 	= $("#nivel").val();
+		var status	= $("#status").val();
+		
+		window.location.href='buscarUsuarios?nome='+ nome +'&nivel=' + nivel + '&status=' + status;
+	}
+</script>
 </html>
 

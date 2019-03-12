@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<style>
 		#td{
@@ -22,10 +23,13 @@
 		#pad{
 			padding:2px;
 		}
+
 	</style>
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div id="pagina">
 	<h1>Lista de pacientes</h1>	
 	<div>
 	<a href="/cadastrarPaciente">
@@ -95,6 +99,7 @@
 					</td>
 			</tr>
 		</table>
+	</div>
 	</div>
 </body>
 <script>

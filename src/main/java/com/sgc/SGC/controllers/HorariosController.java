@@ -69,6 +69,24 @@ public class HorariosController {
         hr.delete(horarios);
         return "redirect:/horarios";
     }
+    
+    @RequestMapping("/buscarHorarios")
+	public ModelAndView buscarHorarios(@RequestParam("nomeMedico") String nomeMedico,
+										@RequestParam("diaSemana") int diaSemana) {
+    	
+    	ModelAndView mv = new ModelAndView("horarios/formListaHorarios");   
+    	
+    	Iterable<Horarios> horarios;
+    	if (nomeMedico != "") {
+    		horarios = hr.findByNomeUsuario(nomeMedico);
+    	} else if (diaSemana != 0) {
+    		horarios = hr.findByDiaSemana(diaSemana);
+    	} else {
+    		horarios = hr.findAll();
+    	}
+    	mv.addObject("horarios", horarios);
+		return mv;
+	}
 	
 	
 }

@@ -40,16 +40,18 @@ public class UsuarioController {
 		usuario.setSenha(hashedPassword);
 		Date today = new Date();
 		usuario.setDataInicio(today);
-		usuario.setDisponivel('I');
 		
 		if (usuario.getNivel() == 1)
 			usuario.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
 		else
 			if (usuario.getNivel() == 2)
 				usuario.setRoles(Arrays.asList(new Role("ROLE_USER")));
-			else
-				usuario.setRoles(Arrays.asList(new Role("ROLE_MED")));
-		
+			else {
+				if (usuario.getNivel() == 3)
+					usuario.setRoles(Arrays.asList(new Role("ROLE_MED")));
+				else
+					usuario.setRoles(Arrays.asList(new Role("ROLE_LAB")));
+			}
 		ur.save(usuario);
 		return "redirect:/usuarios";
 	}
@@ -72,13 +74,22 @@ public class UsuarioController {
 	
 	@RequestMapping(value="/usuarios/{idUsuario}", method=RequestMethod.POST)
 	public String atualizarUsuario(Usuario usuario) {
+		String senha;
+		senha = usuario.getSenha();
+		BCryptPasswordEncoder sehaCrypt = new BCryptPasswordEncoder();
+		String hashedPassword = sehaCrypt.encode(senha);
+		usuario.setSenha(hashedPassword);
 		if (usuario.getNivel() == 1)
 			usuario.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
 		else
 			if (usuario.getNivel() == 2)
 				usuario.setRoles(Arrays.asList(new Role("ROLE_USER")));
-			else
-				usuario.setRoles(Arrays.asList(new Role("ROLE_MED")));
+			else {
+				if (usuario.getNivel() == 3)
+					usuario.setRoles(Arrays.asList(new Role("ROLE_MED")));
+				else
+					usuario.setRoles(Arrays.asList(new Role("ROLE_LAB")));
+			}
 		ur.save(usuario);
 		return "redirect:/usuarios";
 	}
@@ -89,4 +100,26 @@ public class UsuarioController {
         ur.delete(usuario);
         return "redirect:/usuarios";
     }
+    
+    @RequestMapping("/buscarUsuarios")
+   	public ModelAndView buscarUsuarios(@RequestParam("nome") String nome,
+   									   @RequestParam("nivel") int nivel,
+   									   @RequestParam("status") String status) {
+    	
+       	ModelAndView mv = new ModelAndView("usuario/formListaUsuarios");   	
+       	Iterable<Usuario> usuarios;
+       	
+       	if (nome != "") {
+       		usuarios = ur.findAllByName(nome);
+       	} else if (nivel != 0) {
+       		usuarios = ur.findAllByNivel(nivel);
+       	} else if (status != ""){
+       		char statusChar = status.charAt(1);
+       		usuarios = ur.findAllByStatus(statusChar);
+       	} else {
+       		usuarios = ur.findAll();
+       	}
+       	mv.addObject("usuarios", usuarios);
+   		return mv;
+   	}
 }

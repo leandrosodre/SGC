@@ -7,10 +7,28 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="../js/jquery.mask.js"></script>
 	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+	</style>
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div id="pagina">
 	<h1>Lista de Horarios</h1>	
 	<div>
 	<a href="/cadastrarHorarios">
@@ -21,6 +39,44 @@
 	<a href="/paginaInicial">
 		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
 	</a>
+	</div>
+		<div>
+		<table class="table table-bordered" id="td">
+			<tr><td colspan="6" id="filtro"><b>Filtros</b></td></tr>
+			<tr>
+				<td style="vertical-align: middle" id="pad">
+					<b>Nome Médico: </b>
+				</td> 
+				<td id="pad">
+					<input id="nomeMedico" class="form-control" type="text"/>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Dia da semana: </b>
+				</td> 
+				<td id="pad">
+					<select class="form-control" id="diaSemana">
+												<option value = 0>SELECIONE</option>
+												<option value = 2>Segunda-feira</option>
+												<option value = 3>Terça-feira</option>
+												<option value = 4>Quarta-feira</option>
+												<option value = 5>Quinta-feira</option>
+												<option value = 6>Sexta-feira</option>
+												<option value = 7>Sábado</option>
+												<option value = 1>Domingo</option>
+											</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="6" style="text-align:right" id="pad">
+					<a onclick="busca()">
+						<button type="button" class="btn btn-primary">
+					  			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+						</button>
+					</a>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div class="container">
 		<table class="table">
@@ -58,18 +114,26 @@
 						</a>
 					</td>	
 			</tr>
-		</table>
-		<script>
-		$(document).ready(function(){
-			$(".hora").each(function(){
-				if ($(this).text().length < 2)
-					$(this).text("0" + $(this).text());
-			});
-			
-		});
-		</script>		
+		</table>		
+	</div>
 	</div>
 </body>
+<script>
+	$(document).ready(function(){
+		$(".hora").each(function(){
+			if ($(this).text().length < 2)
+				$(this).text("0" + $(this).text());
+		});
+		
+	});
+	
+	function busca(){
+		var nomeMedico 	= $("#nomeMedico").val();
+		var diaSemana 	= $("#diaSemana").val();
+		
+		window.location.href='buscarHorarios?nomeMedico='+ nomeMedico +'&diaSemana=' + diaSemana;
+	}
+</script>
 </html>
 
 

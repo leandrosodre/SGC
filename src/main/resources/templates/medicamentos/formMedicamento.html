@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<style>
 		td{
 			padding:4px;
@@ -19,6 +20,8 @@
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div id="pagina">
 	<h1>Cadastro de Medicamentos</h1>
 	<form class ="container" method="post">
 		<table>
@@ -55,6 +58,7 @@
 		</tr>
 		</table>
 	</form>
+</div>
 </body>
 </html>
 

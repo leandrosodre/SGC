@@ -16,5 +16,8 @@ public interface AgendaRepository extends CrudRepository<Agenda, String>{
 	@Query("select a from Agenda a where a.paciente.idPaciente = ?1")
 	List<Agenda> findAllAgendasDoPaciente(long idPaciente);
 	
+	@Query("select a from Agenda a where a.usuarioMedico.idUsuario = ?1")
+	List<Agenda> findAllAgendasDoMedico(long idUsuario);
+	
 	
 }
