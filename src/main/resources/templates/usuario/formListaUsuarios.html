@@ -8,6 +8,7 @@
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
+	<script src="js/atualizarMensagens.js"></script>
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<style>
 		#td{
@@ -23,11 +24,15 @@
 		#pad{
 			padding:2px;
 		}
+		#msg{
+			 width:80%;
+			 margin-left:10%;
+		}
 	</style>
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Lista de Usuarios</h1>
 	<div>
@@ -120,6 +125,8 @@
 					</td>	
 			</tr>
 		</table>
+	</div>
+	<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
 	</div>
 </div>
 </body>

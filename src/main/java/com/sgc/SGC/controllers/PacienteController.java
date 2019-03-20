@@ -10,15 +10,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sgc.SGC.models.Agenda;
 import com.sgc.SGC.models.Paciente;
+import com.sgc.SGC.models.Usuario;
 import com.sgc.SGC.repository.AgendaRepository;
+import com.sgc.SGC.repository.MensagemRepository;
 import com.sgc.SGC.repository.PacienteRepository;
+import com.sgc.SGC.repository.UsuarioRepository;
+import com.sgc.SGC.security.BuscarUsuarioAutenticado;
 import com.sgc.SGC.validacoes.ValidarPaciente;
 
 @Controller
 public class PacienteController {
+	@Autowired
+	UsuarioRepository ur;
+	
+	@Autowired
+	MensagemRepository mer;
 	
 	@Autowired
 	private PacienteRepository pr;
@@ -27,7 +37,11 @@ public class PacienteController {
 	private AgendaRepository ar;
 	
 	@RequestMapping(value="/cadastrarPaciente", method=RequestMethod.GET)
-	public String form() {
+	public String form(Model model) {
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		return "pacientes/formPaciente";
 	}
 	
@@ -35,6 +49,10 @@ public class PacienteController {
 	public String form(Paciente paciente, Model model) {
 		ValidarPaciente validar = new ValidarPaciente(paciente);
 		boolean pacienteValido = validar.pacienteValido();
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		
 		if ( !pacienteValido ) {
 			model.addAttribute("erro", true);
@@ -50,6 +68,10 @@ public class PacienteController {
 	public ModelAndView listaPacientes() {
 		ModelAndView mv = new ModelAndView("pacientes/formListaPacientes");
 		Iterable<Paciente> pacientes = pr.findAll();
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
 		mv.addObject("pacientes", pacientes);
 		return mv;
 	}
@@ -59,6 +81,10 @@ public class PacienteController {
 		Paciente paciente = pr.findByIdPaciente(idPaciente);		
 		ModelAndView mv = new ModelAndView("pacientes/formEditarPaciente");
 		mv.addObject("paciente", paciente);
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
 		return mv;
 	}
 	
@@ -69,15 +95,17 @@ public class PacienteController {
 	}
 	
     @RequestMapping(value="/pacientes/delete/{idPaciente}")
-    public String excluirPaciente(@RequestParam("idPaciente") long idPaciente, Model model) {
+    public String excluirPaciente(@PathVariable("idPaciente") long idPaciente, RedirectAttributes redirectAttributes) {
     	Paciente paciente = pr.findByIdPaciente(idPaciente);
     	List<Agenda> agenda = ar.findAllAgendasDoPaciente(idPaciente);
     	if (agenda.isEmpty()) {
 	        pr.delete(paciente);
-	        model.addAttribute("msg", "Registro Excluido com sucesso.");
+	        redirectAttributes.addFlashAttribute("message", "Registro Excluido com sucesso.");
+	        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 	        return "redirect:/pacientes";
     	}
-    	model.addAttribute("msg", "Falha ao excluir registro.");
+    	redirectAttributes.addFlashAttribute("message", "Falha ao Excluir Registro (Existem agendas para o paciente)");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
     	return "redirect:/pacientes";
     }
 	
@@ -85,7 +113,12 @@ public class PacienteController {
 	public ModelAndView buscarPacientes(@RequestParam("cpf") String cpf,
 										@RequestParam("nome") String nomePaciente) {
     	ModelAndView mv = new ModelAndView("pacientes/formListaPacientes");   	
-    	Iterable<Paciente> pacientes;
+    	
+    	String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+    	
+		Iterable<Paciente> pacientes;
     	if (cpf != "") {
     		pacientes = pr.findByCPFLike(cpf);
     	} else if (nomePaciente != "") {
@@ -93,6 +126,8 @@ public class PacienteController {
     	} else {
     		pacientes = pr.findAll();
     	}
+
+    	mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
     	mv.addObject("pacientes", pacientes);
 		return mv;
 	}

@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Agenda;
+import com.sgc.SGC.models.Horarios;
 import com.sgc.SGC.models.Paciente;
 import com.sgc.SGC.models.Usuario;
 import com.sgc.SGC.repository.AgendaRepository;
+import com.sgc.SGC.repository.HorariosRepository;
+import com.sgc.SGC.repository.MensagemRepository;
 import com.sgc.SGC.repository.PacienteRepository;
 import com.sgc.SGC.repository.UsuarioRepository;
 import com.sgc.SGC.security.BuscarUsuarioAutenticado;
+import com.sgc.SGC.validacoes.ValidarAgenda;
 
 @Controller
 public class AgendaController {
@@ -32,11 +36,20 @@ public class AgendaController {
 	@Autowired
 	AgendaRepository ar;
 	
+	@Autowired
+	HorariosRepository hr;
+	
+	@Autowired
+	MensagemRepository mer;
+	
 	@RequestMapping(value="/marcarConsulta", method=RequestMethod.GET)
 	public String marcarConsulta(Model model) {
 		List<Usuario> usuarios 			= ur.findAllMedicos();
 		Iterable<Paciente> pacientes 	= pr.findAll();
-		
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		model.addAttribute("usuario", new Usuario());
 		model.addAttribute("usuarios", usuarios);
 		model.addAttribute("paciente", new Paciente());
@@ -45,32 +58,51 @@ public class AgendaController {
 	}
 	
 	@RequestMapping(value="/marcarConsulta", method=RequestMethod.POST)
-	public String marcarConsulta(Agenda agenda) {
-		String nomeUsuario 		= new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+	public String marcarConsulta(Agenda agenda, Model model) {
 		long idUsuarioMedico 	= agenda.getUsuarioMedico().getIdUsuario();
-		Usuario usuarioMarcador = ur.findByLogin(nomeUsuario);
 		Usuario usuarioMedico 	= ur.findByIdUsuario(idUsuarioMedico);
-		
-		agenda.setUsuarioMarcador(usuarioMarcador);
+		List<Horarios> horarios = hr.findByNomeUsuario(usuarioMedico.getNomeUsuario().toString());
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		agenda.setUsuarioMedico(usuarioMedico);
 		
-		ar.save(agenda);
-		return "redirect:/agenda";
+		ValidarAgenda validar = new ValidarAgenda(agenda, horarios);
+		boolean agendaValida = validar.horariosValido();
+		
+		if ( !agendaValida ) {
+			List<Usuario> usuarios 			= ur.findAllMedicos();
+			Iterable<Paciente> pacientes 	= pr.findAll();
+			
+			model.addAttribute("usuario", new Usuario());
+			model.addAttribute("usuarios", usuarios);
+			model.addAttribute("paciente", new Paciente());
+			model.addAttribute("pacientes", pacientes);
+			
+			model.addAttribute("erro", true);
+			model.addAttribute("mensagem", validar.getMensagem());
+			return "agendamento/FormMarcarConsulta";
+		}else {
+			ar.save(agenda);
+			return "redirect:/agenda";
+		}
 	}
 	
 	@RequestMapping("/agenda")
 	public ModelAndView carregarAgendas() {
 		ModelAndView mv = new ModelAndView("agendamento/formAgenda");
 		Iterable<Agenda> agenda = ar.findAll();
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
 		mv.addObject("agendas", agenda);
 		return mv;
 	}
 	
 	@RequestMapping(value="/agenda/{idAgenda}", method=RequestMethod.POST)
 	public String atualizarAgenda(Agenda agenda) {
-		String nomeUsuario 		= new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
-		Usuario usuarioMarcador = ur.findByLogin(nomeUsuario);
-		agenda.setUsuarioMarcador(usuarioMarcador);
 		ar.save(agenda);
 		return "redirect:/agenda";
 	}
@@ -82,6 +114,10 @@ public class AgendaController {
 		List<Usuario> usuarios = ur.findAllMedicos();
 		Iterable<Paciente> pacientes 	= pr.findAll();
 		ModelAndView mv = new ModelAndView("agendamento/formEditarAgenda");
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
 		mv.addObject("agenda", agenda);
 		mv.addObject("usuarios", usuarios);
 		mv.addObject("pacientes", pacientes);
@@ -105,7 +141,10 @@ public class AgendaController {
     	Iterable<Paciente> pacientes;
     	Iterable<Usuario> medicos;
     	List<Agenda> agendas = new ArrayList<Agenda>();
-    	
+    	String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+    	Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+    	int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+    	mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
     	if (nomePaciente != "") {
     		pacientes = pr.findByName(nomePaciente);
     		for (Paciente paciente : pacientes) {

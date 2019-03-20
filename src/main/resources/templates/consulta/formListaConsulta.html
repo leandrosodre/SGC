@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="../js/jquery.mask.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+	</style>
+</head>
+
+<body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
+	<h1>Lista de Consultas em Aberto</h1>	
+	<div>
+	<a href="/paginaInicial">
+		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
+	</a>
+	</div>
+	<div>
+		<table class="table table-bordered" id="td">
+			<tr><td colspan="4" id="filtro"><b>Filtros</b></td></tr>
+			<tr>
+				<td style="vertical-align: middle" id="pad">
+					<b>Medicos: </b>
+				</td> 
+				<td id="pad">
+						<select class="form-control" id="idMedico" name="usuarioMedico.idUsuario">
+									<option value = "0" th:text="SELECIONE"></option>
+									<option th:each="usuario : ${usuarios}"
+									        th:value="${usuario.idUsuario}"
+									        th:text="${usuario.nomeUsuario}"/>
+								
+						</select>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Pacientes: </b>
+				</td> 
+				<td id="pad">
+						<select class="form-control" id="idPaciente" name="paciente.idPaciente">
+								<option value = "0" th:text="SELECIONE"></option>
+								<option th:each="paciente : ${pacientes}"
+								        th:value="${paciente.idPaciente}"
+								        th:text="${paciente.nomeCompleto}"/>
+							
+						</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:right" id="pad">
+					<a onclick="busca()">
+						<button type="button" class="btn btn-primary">
+					  			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+						</button>
+					</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="container">
+	<table class="table">
+			<thead>
+				<td><b>Nome Médico</b></td>
+				<td><b>Nome Paciente</b></td>
+				<td><b>Data Consulta</b></td>
+				<td><b>Hora Consulta</b></td>
+				<td><b>Abrir</b></td>
+			</thead>
+			<tr th:each="agenda : ${agendas}">
+					<td><span th:text="${agenda.usuarioMedico.nomeUsuario}"></span></td>
+					<td><span th:text="${agenda.paciente.nomeCompleto}"></span></td>
+					<td><span class="data" th:text="${agenda.dataPrevista}"></span></td>
+					<td><span class="hora"></span></td>
+					<td width="10px">
+						<a th:href="${(#mvc.url('CC#realizarConsulta').arg(0, agenda.idAgenda)).build()}">
+							<button type="button" class="btn btn-primary">
+				  				<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+							</button>
+						</a>
+					</td>	
+			</tr>
+		</table>
+	</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$(".data").each(function(){
+			var data = $(this).text();
+			var dataFormatada, horaFormatada;
+			var ano, mes, dia, hora, minuto;
+			
+			
+			ano = data.substring(0,4);
+			mes = data.substring(5,7);
+			dia = data.substring(8,10);
+			
+			hora 	= data.substring (11,13);
+			minuto  = data.substring (14,16);
+			
+			
+			dataFormatada = dia + "/" + mes + "/" + ano;
+			horaFormatada = hora + ":" + minuto;
+			
+			
+			$(this).text(dataFormatada);
+			$(this).closest("td").next().find(".hora").text(horaFormatada);
+			
+		});
+		
+	});
+	function busca(){
+		var idPaciente 	 = $("#idPaciente").val();
+		var idMedico 	 = $("#idMedico").val();
+		
+		window.location.href='buscarConsultas?idPaciente='+ idPaciente +'&idMedico=' + idMedico;
+	}
+</script>
+</body>
+</html>
+
+
+

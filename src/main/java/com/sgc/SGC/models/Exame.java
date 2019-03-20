@@ -32,12 +32,19 @@ public class Exame {
 		private Paciente paciente;
 		
 		@ManyToOne
-		public Usuario usuarioMedico;
-		
-		@ManyToOne
 		private TipoExame tipoExame;
 		
+		@ManyToOne
+		private Usuario usuarioSolicitante;
 		
+		public Usuario getUsuarioSolicitante() {
+			return usuarioSolicitante;
+		}
+
+		public void setUsuarioSolicitante(Usuario usuarioSolicitante) {
+			this.usuarioSolicitante = usuarioSolicitante;
+		}
+
 		public long getIdExame() {
 			return idExame;
 		}
@@ -77,15 +84,7 @@ public class Exame {
 		public void setPaciente(Paciente paciente) {
 			this.paciente = paciente;
 		}
-
-		public Usuario getUsuarioMedico() {
-			return usuarioMedico;
-		}
-
-		public void setUsuarioMedico(Usuario usuarioMedico) {
-			this.usuarioMedico = usuarioMedico;
-		}
-
+		
 		public TipoExame getTipoExame() {
 			return tipoExame;
 		}

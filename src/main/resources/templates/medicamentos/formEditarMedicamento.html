@@ -5,9 +5,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="../js/jquery.mask.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
+	<script src="../../../js/jquery.mask.js"></script>
+	<script src="../../../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../css/masterPage.css">
 	<style>
 		td{
 			padding:4px;
@@ -20,7 +20,7 @@
 </head>
 
 <body th:each="medicamento : ${medicamento}">
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Cadastro de Medicamentos</h1>
 	<form class ="container" method="post">
@@ -38,6 +38,13 @@
 		</tr>
 		<tr>
 			<td>Fabricante:</td> 			<td><input class="form-control" type="text" th:value="${medicamento.nomeFabricante}" name="nomeFabricante"/></td>
+		</tr>
+		<tr>
+			<td>Ativo:</td>					<td><select class="form-control" name="ativo">	
+													<option th:value="'S'" th:text="Sim" th:selected="${medicamento.ativo}=='S'"></option>
+													<option th:value="'N'" th:text="Não" th:selected="${medicamento.ativo}=='N'"></option>
+						   	  					</select>
+						   	  				</td>
 		</tr>
 		<tr height="20px">
 		

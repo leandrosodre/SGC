@@ -23,11 +23,15 @@
 		#pad{
 			padding:2px;
 		}
+		#msg{
+			 width:80%;
+			 margin-left:10%;
+		}
 	</style>
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Lista de Medicamentos</h1>	
 	<div>
@@ -82,11 +86,16 @@
 				<td><b>Nome de Fábrica</b></td>
 				<td><b>Nome Genérico</b></td>
 				<td><b>Nome do Fabricante</b></td>
+				<td><b>Ativo</b></td>
 			</thead>
 			<tr th:each="medicamento : ${medicamentos}">
 					<td><span th:text="${medicamento.nomeFabrica}"></span></td>
 					<td><span th:text="${medicamento.nomeGenerico}"></span></td>
 					<td><span th:text="${medicamento.nomeFabricante}"></span></td>
+					<td th:switch="${medicamento.ativo}">
+						<span th:case='S'>Sim</span>
+						<span th:case='N'>Não</span>
+					</td>
 					<td width="10px">
 						<a th:href="${(#mvc.url('MC#editarMedicamento').arg(0, medicamento.idMedicamento)).build()}">
 							<button type="button" class="btn btn-primary">
@@ -104,6 +113,8 @@
 			</tr>
 		</table>
 	</div>
+	<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
+	</div>
 </div>
 </body>
 <script>
@@ -114,6 +125,10 @@
 		
 		window.location.href='buscarMedicamentos?fabrica='+ fabrica +'&generico=' + generico + '&fabricante=' + fabricante;
 	}
+	$(document).ready(function (){
+		//$("#solicitarEstoque").tooltip("Solitiar Estoque");
+	});
+	
 </script>
 </html>
 

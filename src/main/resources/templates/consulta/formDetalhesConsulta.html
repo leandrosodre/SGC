@@ -1,0 +1,153 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		.hora{
+			width:60px;
+		}
+		.tituloTabela{
+			width:12%;
+		}
+		.tabelaInterna{
+			width:12%;
+		}
+		#sintomas{
+			resize:none;
+		}
+		#recomendacoes{
+			resize:none;
+		}
+		#tabelaCentro{
+			width: 75%;
+			margin-left: 10%;
+		}
+	</style>
+</head>
+
+<body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
+<h1>Realizar Consulta</h1>
+<div height=50px>
+	<a th:href="@{'/imprimirReceita/' + ${agenda.idAgenda}}">
+		<button type="button" class="btn btn-primary">
+	  		<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+		</button>
+	</a>
+</div>
+<div class="container">
+<form method="post">
+<table class="table-bordered" width=90%>
+	<tr height=40px>
+		<td colspan=4><b>Dados Paciente</b></td>
+	</tr>
+	<tr>
+		<td colspan=4>
+			<table width=100% height=100%>
+				<tr>
+					<td class="tituloTabela">CPF: </td><td width=13%><span class="form-control" type="text" th:text="${agenda.paciente.cpf}" name="cpf"></span></td>
+					<td class="tituloTabela">Nome Paciente: </td><td width=40%><span class="form-control" type="text" th:text="${agenda.paciente.nomeCompleto}" name="nomePaciente"></span></td>
+					<td class="tituloTabela">Data de Nascimento: </td><td><input class="form-control" type="date" th:field="${agenda.paciente.dataNascimento}" name="dataNascimento"/></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr height=40px>
+		<td colspan=4><b>Endereço</b></td>
+	</tr>
+	<tr>
+		<td colspan=4>
+			<table width=100% height=100%>
+				<tr>
+					<td class="tituloTabela">Rua:</td><td colspan=1><span class="form-control" type="text" th:text="${agenda.paciente.endereco}" name="rua"></span>
+					<td class="tituloTabela">Numero:</td><td><span class="form-control" type="text" th:text="${agenda.paciente.numero}" name="numero"></span>
+					<td class="tituloTabela">Complemento:</td><td class="spanInterno"><span class="form-control" type="text" th:text="${agenda.paciente.complemento}" name="complemento"></span>
+				</td>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=4>
+			<table width="81%" height="100%">
+				<tr>
+					<td class="tituloTabela">Cidade:</td><td width="32%" class="spanInterno"><span class="form-control" type="text" th:text="${agenda.paciente.cidade}" name="cidade"></span>
+					<td class="tituloTabela">Estado:</td><td width="24%" class="spanInterno"><span class="form-control" type="text" th:text="${agenda.paciente.estado}" name="estado"></span>
+				</td>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="tituloTabela">Nome Médico: </td> <td width=50%><span class="form-control" type="text" th:text="${agenda.usuarioMedico.nomeUsuario}" name="nomeMedico"></span></td>
+		<td class="tituloTabela">Data da Consulta: </td><td> <input class="form-control" id="data" type="datetime-local" th:field="${agenda.dataPrevista}" name="dataPrevista"/></td>
+	</tr>
+</table>	
+<table>
+	<tr>
+		<table class="table" width="80%">
+			<tr><b>Medicamentos<b></tr>
+			<thead>
+				<tr>
+					<td><b>Nome Medicamento</b></td>
+					<td><b>Quantidade</b></td>
+					<td><b>Posologia</b></td>
+				</tr>
+			</thead>
+			<tr th:each="posologia : ${posologias}">
+				<td><span th:text="${posologia.medicamento.nomeFabrica}"></span></td>
+				<td><span th:text="${posologia.qtd}"></span></td>
+				<td><span th:text="${posologia.descricao}"></span></td>
+			</tr>
+		</table>
+	</tr>
+</table>
+<table>
+	<tr>
+		<table id="tabelaCentro" class="table">
+			<tr><td><b>Sintomas:</b></td></tr>
+			<tr><td><textarea class="form-control" type="text" th:text="${consulta.sintomas}" id="sintomas" name="sintomas" readonly></textarea></td></tr>
+			<tr><td><b>Recomendações:</b></td></tr>
+			<tr><td><textarea class="form-control" type="text" th:text="${consulta.recomendacoes}" id="recomendacoes" name="recomendacoes" readonly></textarea></td></tr>			
+		</table>
+	</tr>
+</table>
+<table width=90%>
+	<tr style="text-align:right">
+		<td>
+			<a href="/listaConsulta">
+				<button type="button" class="btn btn-primary">
+			  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Voltar	
+				</button>
+			</a>
+		</td>
+	</tr>
+</table>
+</form>
+</div>
+</div>
+</body>
+<script>
+	$(document).ready(function(){
+		var data = $(this).text();
+		var dataFormatada, horaFormatada;
+		var ano, mes, dia, hora, minuto;
+		
+		
+		ano = data.substring(0,4);
+		mes = data.substring(5,7);
+		dia = data.substring(8,10);
+		
+		hora 	= data.substring (11,13);
+		minuto  = data.substring (14,16);
+		
+		
+		dataFormatada = dia + "/" + mes + "/" + ano;
+		horaFormatada = hora + ":" + minuto;
+	});
+</script>
+</html>

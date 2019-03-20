@@ -16,19 +16,24 @@
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 <h1>Marcar Consulta</h1>
 <div class="container">
 <form method="post">
 <table>
+	<tr><td colspan="2">
+			<div th:if="${erro}" class="alert alert-danger">    
+    			<div th:text="${mensagem}"></div>
+    		</div>
+    	</td>
+	</tr>	
 	<tr>
 		<td>Paciente: </td><td><select class="form-control" name="paciente.idPaciente">
 									<option value = "0" th:text="SELECIONE"></option>
 									<option th:each="paciente : ${pacientes}"
 									        th:value="${paciente.idPaciente}"
 									        th:text="${paciente.nomeCompleto}"/>
-								
 								</select>
 							</td>
 	</tr>
@@ -39,7 +44,6 @@
 									<option th:each="usuario : ${usuarios}"
 									        th:value="${usuario.idUsuario}"
 									        th:text="${usuario.nomeUsuario}"/>
-								
 								</select>
 				  		</td>
 	</tr>

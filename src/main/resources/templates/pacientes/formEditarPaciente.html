@@ -20,7 +20,7 @@
 </head>
 
 <body th:each="paciente : ${paciente}">
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Cadastro de Pacientes</h1>
 	<form class ="container" method="post">
@@ -40,7 +40,7 @@
 		   	  				</td>
 		</tr>
 		<tr>
-			<td>Data de Nascimento:</td> 	<td><input class="form-control" type="date" th:value="${paciente.dataNascimento}" name="dataNascimento"/></td>
+			<td>Data de Nascimento:</td> 	<td><input class="form-control" type="date" th:field="${paciente.dataNascimento}" name="dataNascimento"/></td>
 		</tr>
 		<tr>
 			<td>E-mail:</td> 	<td><input class="form-control" type="text" th:value="${paciente.email}" name="email"/></td>

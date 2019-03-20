@@ -16,5 +16,12 @@ public interface MedicamentoRepository extends CrudRepository<Medicamento, Strin
 	
 	@Query("select m from Medicamento m where m.nomeFabricante like %?1%")
 	Iterable<Medicamento> findByNomeFabricanteLike(String nomeFabricante);
+	
+	@Query("select m from Medicamento m where m.ativo = 'S'")
+	Iterable<Medicamento> findAllMedicamentosAtivos();
+	
+	@Query("select m from Medicamento m order by ativo desc")
+	Iterable<Medicamento> findAllOrderAtivo();
+	
 
 }

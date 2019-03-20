@@ -23,12 +23,16 @@
 		#pad{
 			padding:2px;
 		}
+		#msg{
+			 width:80%;
+			 margin-left:10%;
+		}
 
 	</style>
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Lista de pacientes</h1>	
 	<div>
@@ -99,6 +103,8 @@
 					</td>
 			</tr>
 		</table>
+	</div>
+	<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
 	</div>
 	</div>
 </body>

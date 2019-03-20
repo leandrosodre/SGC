@@ -19,6 +19,7 @@ public class Medicamento implements Serializable{
 	private String nomeFabrica;
 	private String nomeGenerico;
 	private String nomeFabricante;
+	private char ativo;
 	
 	
 	public long getIdMedicamento() {
@@ -47,6 +48,12 @@ public class Medicamento implements Serializable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public char getAtivo() {
+		return ativo;
+	}
+	public void setAtivo(char ativo) {
+		this.ativo = ativo;
 	}	
 	
 }

@@ -6,16 +6,24 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sgc.SGC.models.Role;
 import com.sgc.SGC.models.Usuario;
+import com.sgc.SGC.repository.AgendaRepository;
+import com.sgc.SGC.repository.ExameRepository;
+import com.sgc.SGC.repository.HorariosRepository;
+import com.sgc.SGC.repository.MensagemRepository;
 import com.sgc.SGC.repository.PacienteRepository;
 import com.sgc.SGC.repository.UsuarioRepository;
+import com.sgc.SGC.security.BuscarUsuarioAutenticado;
+import com.sgc.SGC.validacoes.ValidarUsuario;
 
 @Controller
 public class UsuarioController {
@@ -26,14 +34,34 @@ public class UsuarioController {
 	@Autowired
 	PacienteRepository pr;
 	
+	@Autowired
+	HorariosRepository hr;
+	
+	@Autowired
+	AgendaRepository ar;
+	
+	@Autowired
+	ExameRepository er;
+	
+	
+	@Autowired
+	MensagemRepository mer;
+	
 	@RequestMapping(value="/cadastrarUsuario", method=RequestMethod.GET)
-	public String form() {
+	public String form(Model model) {
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		return "usuario/formUsuario";
 	}
 	
 	@RequestMapping(value="/cadastrarUsuario", method=RequestMethod.POST)
-	public String cadastrarUsuario(Usuario usuario){
+	public String cadastrarUsuario(Usuario usuario, Model model){
 		String senha;
+		ValidarUsuario validar = new ValidarUsuario(usuario);
+		boolean usuarioValido = validar.usuarioValido();
+		
 		senha = usuario.getSenha();
 		BCryptPasswordEncoder sehaCrypt = new BCryptPasswordEncoder();
 		String hashedPassword = sehaCrypt.encode(senha);
@@ -52,33 +80,52 @@ public class UsuarioController {
 				else
 					usuario.setRoles(Arrays.asList(new Role("ROLE_LAB")));
 			}
-		ur.save(usuario);
-		return "redirect:/usuarios";
+		
+		if ( !usuarioValido ) {
+			model.addAttribute("erro", true);
+			model.addAttribute("mensagem", validar.getMensagem());
+			return "usuario/formUsuario";
+		}else {
+			ur.save(usuario);
+			return "redirect:/usuarios";
+		}
 	}
 	
 	@RequestMapping("/usuarios")
 	public ModelAndView listaUsuarios() {
 		ModelAndView mv = new ModelAndView("usuario/formListaUsuarios");
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
 		Iterable<Usuario> usuarios = ur.findAll();
 		mv.addObject("usuarios", usuarios);
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
 		return mv;
 	}
 	
 	@RequestMapping(value="/usuarios/{idUsuario}", method=RequestMethod.GET)
 	public ModelAndView editarUsuario(@PathVariable("idUsuario") long idUsuario) {
-		Usuario usuario = ur.findByIdUsuario(idUsuario);		
+		Usuario usuario = ur.findByIdUsuario(idUsuario);
+		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		
 		ModelAndView mv = new ModelAndView("usuario/formEditarUsuario");
 		mv.addObject("usuario", usuario);
+		mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
+		
 		return mv;
 	}
 	
 	@RequestMapping(value="/usuarios/{idUsuario}", method=RequestMethod.POST)
 	public String atualizarUsuario(Usuario usuario) {
 		String senha;
-		senha = usuario.getSenha();
-		BCryptPasswordEncoder sehaCrypt = new BCryptPasswordEncoder();
-		String hashedPassword = sehaCrypt.encode(senha);
-		usuario.setSenha(hashedPassword);
+		if (usuario.getSenha().length() < 15) {
+			senha = usuario.getSenha();
+			BCryptPasswordEncoder sehaCrypt = new BCryptPasswordEncoder();
+			String hashedPassword = sehaCrypt.encode(senha);
+			usuario.setSenha(hashedPassword);
+		}
 		if (usuario.getNivel() == 1)
 			usuario.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
 		else
@@ -95,9 +142,12 @@ public class UsuarioController {
 	}
 	
     @RequestMapping(value="/usuarios/delete/{idUsuario}")
-    public String excluirUsuario(@RequestParam("idUsuario") long idUsuario) {
+    public String excluirUsuario(@RequestParam("idUsuario") long idUsuario, RedirectAttributes redirectAttributes) {
     	Usuario usuario = ur.findByIdUsuario(idUsuario);
-        ur.delete(usuario);
+		usuario.setStatus('I');
+		ur.save(usuario);
+        redirectAttributes.addFlashAttribute("message", "Usuário inativado com sucesso.");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/usuarios";
     }
     
@@ -109,6 +159,10 @@ public class UsuarioController {
        	ModelAndView mv = new ModelAndView("usuario/formListaUsuarios");   	
        	Iterable<Usuario> usuarios;
        	
+       	String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
+		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
+		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		
        	if (nome != "") {
        		usuarios = ur.findAllByName(nome);
        	} else if (nivel != 0) {
@@ -119,6 +173,7 @@ public class UsuarioController {
        	} else {
        		usuarios = ur.findAll();
        	}
+       	mv.addObject("quantidadeNaolidas", quantidadeNaolidas);
        	mv.addObject("usuarios", usuarios);
    		return mv;
    	}

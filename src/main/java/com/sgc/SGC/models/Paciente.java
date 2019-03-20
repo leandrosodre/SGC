@@ -25,6 +25,7 @@ public class Paciente implements Serializable{
 	
 	private String  nomeCompleto;
 	private char    sexo; //M ou F
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd") 
 	private Date    dataNascimento;
 	private String  email;

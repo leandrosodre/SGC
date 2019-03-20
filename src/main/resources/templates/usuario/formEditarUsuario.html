@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Cadastro de Usuario</h1>
 	
@@ -26,7 +26,7 @@
 			<td>Login:</td> <td><input class="form-control" type="text" th:value="${usuario.login}" name="login"/></td>
 		</tr>
 		<tr>
-		<td>Senha:</td> 			<td><input class="form-control" type="password" th:value="${usuario.senha}" name="senha"/></td>
+		<td>Senha:</td> 			<td><input class="form-control" type="password" maxlength="15" th:value="${usuario.senha}" name="senha"/></td>
 		</tr>
 		<tr>
 		<td>Nível:</td> 		<td>

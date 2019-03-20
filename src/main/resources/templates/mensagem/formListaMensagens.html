@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/jquery.mask.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+		#msg{
+			 width:80%;
+			 margin-left:10%;
+		}
+	</style>
+</head>
+
+<body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
+	<h1>Mensagens</h1>
+	<div>
+	<a href="/paginaInicial">
+		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
+	</a>
+		<a href="/enviarMensagem">
+		<button type="button" class="btn btn-primary">
+	  		<span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp Enviar Mensagem
+		</button>
+	</a>
+	</div>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<td><b>Remetente</b></td>
+				<td><b>Mensagem</b></td>
+			</thead>
+			<tr th:each="mensagem : ${mensagens}">
+					<td><span th:text="${mensagem.usuarioRemet.nomeUsuario}"></span></td>
+					<td><span th:text="${mensagem.textoMensagem}"></span></td>
+					<td width="10px">
+						<a th:href="${(#mvc.url('MC#excluirMensagem').arg(0, mensagem.idMensagem)).build()}">
+							<button type="button" data-method="delete" class="btn btn-danger">
+					  			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>	
+							</button>
+						</a>
+					</td>	
+			</tr>
+		</table>
+	</div>
+	<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
+	</div>
+</div>
+</body>
+<script>
+	function busca(){
+		var nome 	= $("#nome").val();
+		var nivel 	= $("#nivel").val();
+		var status	= $("#status").val();
+		
+		window.location.href='buscarUsuarios?nome='+ nome +'&nivel=' + nivel + '&status=' + status;
+	}
+</script>
+</html>
+

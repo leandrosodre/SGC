@@ -10,12 +10,17 @@
 </head>
 
 <body>
-<div th:replace="fragments/menuLateral :: menuLateral"></div>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Cadastro de Usuario</h1>
 	
 	<form class="container" method="post">
 		<table>		
+		<tr><td colspan="2">
+			<div th:if="${erro}" class="alert alert-danger">    
+	    		<div th:text="${mensagem}"></div>
+	    	</div></td>
+    	</tr>
 		<tr>
 			<td>Nome: </td> <td><input class="form-control" type="text" value="" name="nomeUsuario"/></td>
 		</tr>
@@ -26,7 +31,7 @@
 			<td>Login:</td> <td><input class="form-control" type="text" value="" name="login"/></td>
 		</tr>
 		<tr>
-		<td>Senha:</td> 			<td><input class="form-control" type="password" value="" name="senha"/></td>
+		<td>Senha:</td> 			<td><input class="form-control" type="password" maxlength="15" value="" name="senha"/></td>
 		</tr>
 		<tr>
 		<td>Nível:</td> 		<td>
