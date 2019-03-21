@@ -28,6 +28,9 @@ public class Exame {
 		
 		private String descricao;
 		
+		@Column(nullable = true)
+		private String formatoArquivo;
+		
 		@ManyToOne
 		private Paciente paciente;
 		
@@ -36,6 +39,15 @@ public class Exame {
 		
 		@ManyToOne
 		private Usuario usuarioSolicitante;
+		
+		
+		public String getFormatoArquivo() {
+			return formatoArquivo;
+		}
+
+		public void setFormatoArquivo(String formatoArquivo) {
+			this.formatoArquivo = formatoArquivo;
+		}
 		
 		public Usuario getUsuarioSolicitante() {
 			return usuarioSolicitante;

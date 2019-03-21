@@ -1,6 +1,7 @@
 package com.sgc.SGC.controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Agenda;
 import com.sgc.SGC.models.Horarios;
+import com.sgc.SGC.models.Mensagem;
 import com.sgc.SGC.models.Paciente;
 import com.sgc.SGC.models.Usuario;
 import com.sgc.SGC.repository.AgendaRepository;
@@ -67,6 +69,7 @@ public class AgendaController {
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
 		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		agenda.setUsuarioMedico(usuarioMedico);
+		Paciente paciente = pr.findByIdPaciente(agenda.getPaciente().getIdPaciente());
 		
 		ValidarAgenda validar = new ValidarAgenda(agenda, horarios);
 		boolean agendaValida = validar.horariosValido();
@@ -84,6 +87,15 @@ public class AgendaController {
 			model.addAttribute("mensagem", validar.getMensagem());
 			return "agendamento/FormMarcarConsulta";
 		}else {
+			Mensagem mensagem = new Mensagem();
+	    	mensagem.setUsuarioRemet(usuarioLogado);
+	    	mensagem.setUsuarioDest(usuarioMedico);
+	    	Calendar c = Calendar.getInstance();
+	    	c.setTime(agenda.getDataPrevista());
+	    	mensagem.setTextoMensagem("Consulta marcada para o paciente "+ paciente.getNomeCompleto() +" no dia "+ String.format("%02d",c.get(Calendar.DAY_OF_MONTH)) + "/" + String.format("%02d", c.get(Calendar.MONTH)) + "/" + c.get(Calendar.YEAR));
+	    	mensagem.setLida('N');
+	    	mer.save(mensagem);    
+			
 			ar.save(agenda);
 			return "redirect:/agenda";
 		}

@@ -94,6 +94,13 @@
 						</button>
 					</a>
 				</div>
+				<div th:if="${exame.resultado != null}">
+					<a th:href="${(#mvc.url('EC#downloadExame').arg(0, exame.idExame)).build()}">
+						<button type="button" class="btn btn-primary">
+				  			<span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download Exame
+						</button>
+					</a>
+				</div>
 			</td>
 		</tr>
 		</table>

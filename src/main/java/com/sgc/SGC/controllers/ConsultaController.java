@@ -1,10 +1,17 @@
 package com.sgc.SGC.controllers;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +33,17 @@ import com.sgc.SGC.repository.PacienteRepository;
 import com.sgc.SGC.repository.PosologiaRepository;
 import com.sgc.SGC.repository.UsuarioRepository;
 import com.sgc.SGC.security.BuscarUsuarioAutenticado;
-import com.sgc.SGC.utilidades.ImprimirReceita;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 
 @Controller
 public class ConsultaController {
@@ -51,9 +68,6 @@ public class ConsultaController {
 	
 	@Autowired
 	MensagemRepository mer;
-	
-	@Resource
-    private ImprimirReceita imprimirReceita;
 	
 	@RequestMapping("/consulta")
 	public ModelAndView listarConsultas() {
@@ -245,15 +259,61 @@ public class ConsultaController {
 	}
     
     @RequestMapping(value="/imprimirReceita/{idAgenda}", method=RequestMethod.GET)
-	public void imprimirReceita(@PathVariable("idAgenda") long idAgenda) throws Exception {
-		List<Posologia> posologias = por.findAllPosologiasDaAgenda(idAgenda);
-		Agenda agenda = ar.findByIdAgenda(idAgenda);
-		Paciente paciente = pr.findByIdPaciente(agenda.getPaciente().getIdPaciente());
-		
-		imprimirReceita.generateInvoiceFor(paciente, posologias);
-		
-		
+	public void imprimirReceita(@PathVariable("idAgenda") long idAgenda, HttpServletResponse response) throws Exception {
+    	Agenda agenda = ar.findByIdAgenda(idAgenda);
+    	Paciente paciente = pr.findByIdPaciente(agenda.getPaciente().getIdPaciente());
+    	Usuario medico = ur.findByIdUsuario(agenda.getUsuarioMedico().getIdUsuario());
+    	
+    	String dtNascimento = paciente.getDataNascimento().toString();
+    	String ano = dtNascimento.substring(0,4);
+    	String mes = dtNascimento.substring(5,7);
+    	String dia = dtNascimento.substring(8,10);
+    	String dtFormatada = dia + "/" + mes + "/" + ano;
+    	
+    	InputStream relatorio = getClass().getResourceAsStream("/pdf/receita.jrxml");
+    	JasperReport jasperReport = JasperCompileManager.compileReport(relatorio);
+    	
+    	Map<String, Object> parameters = new HashMap<>();
+    	parameters.put("id_agenda", idAgenda);
+    	parameters.put("paciente", paciente);
+    	parameters.put("titulo", "Receita");
+    	parameters.put("DataNascimento", dtFormatada);
+    	parameters.put("nomeMedico", medico.getNomeUsuario());
+    	JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource().getConnection());
+    	
+    	JRPdfExporter exporter = new JRPdfExporter();
+    	exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+    	exporter.setExporterOutput(
+    	  new SimpleOutputStreamExporterOutput("receita.pdf"));
+    	 
+    	SimplePdfReportConfiguration reportConfig
+    	  = new SimplePdfReportConfiguration();
+    	reportConfig.setSizePageToContent(true);
+    	reportConfig.setForceLineBreakPolicy(false);
+    	 
+    	SimplePdfExporterConfiguration exportConfig
+    	  = new SimplePdfExporterConfiguration();
+    	exportConfig.setAllowedPermissionsHint("PRINTING");
+    	 
+    	exporter.setConfiguration(reportConfig);
+    	exporter.setConfiguration(exportConfig);
+    	
+    	response.setContentType("application/x-download");
+    	response.setHeader("Content-Disposition", String.format("attachment; filename=\"receita.pdf\""));
+    	OutputStream out = response.getOutputStream();
+    	
+    	JasperExportManager.exportReportToPdfStream(jasperPrint, out); 
+    	exporter.exportReport();
 	}
-	
+    
+    @Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/sgc");
+		dataSource.setUsername("root");
+		dataSource.setPassword("a1b2c300");
+		return dataSource;		
+	}
 	
 }

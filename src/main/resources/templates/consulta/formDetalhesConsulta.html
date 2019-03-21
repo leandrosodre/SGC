@@ -27,6 +27,12 @@
 			width: 75%;
 			margin-left: 10%;
 		}
+		#imprimir{
+			margin-bottom:10px;
+		}
+		#tabelaDados{
+			margin-bottom:20px;
+		}
 	</style>
 </head>
 
@@ -34,16 +40,16 @@
 <div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 <h1>Realizar Consulta</h1>
-<div height=50px>
+<div id="imprimir">
 	<a th:href="@{'/imprimirReceita/' + ${agenda.idAgenda}}">
 		<button type="button" class="btn btn-primary">
-	  		<span class="glyphicon glyphicon-print" aria-hidden="true"></span>
+	  		<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Receita
 		</button>
 	</a>
 </div>
 <div class="container">
 <form method="post">
-<table class="table-bordered" width=90%>
+<table id="tabelaDados" class="table-bordered" width=90% >
 	<tr height=40px>
 		<td colspan=4><b>Dados Paciente</b></td>
 	</tr>

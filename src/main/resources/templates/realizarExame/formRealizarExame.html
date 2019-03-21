@@ -38,12 +38,12 @@
 <div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
 	<h1>Solicitacao de Exame</h1>
-	<form class ="container" method="post">
+	<form class ="container" method="post" enctype="multipart/form-data">
 		<table>
 		<tr><td colspan="2">
-			<div th:if="${erro}" class="alert alert-danger">    
-	    		<div th:text="${mensagem}"></div>
-	    	</div></td>
+			<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
+			</div>	
+			</td>
     	</tr>	
 		<tr>
 			<td>Paciente:</td>		  	<td><select class="form-control" name="paciente.idPaciente" disabled="disabled">
@@ -74,6 +74,9 @@
 		</tr>
 		<tr>
 			<td>Resultado:</td> 			<td><textarea id="resultado" th:value="${exame.resultado}"class="form-control" type="text" name="resultado"></textarea></td>
+		</tr>
+		<tr>
+			<td>Arquivo Exame:</td> 		<td><input type="file" name="file" /></td>
 		</tr>
 		<tr height="20px">
 		
