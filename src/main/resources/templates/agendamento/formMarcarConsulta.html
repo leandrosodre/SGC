@@ -11,10 +11,14 @@
 		.hora{
 			width:60px;
 		}
-	
+		#quadroHorarios{
+			width:50%;
+			margin-top:30px;
+			height:120px;
+			overflow:auto; 
+		}
 	</style>
 </head>
-
 <body>
 <div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
 <div id="pagina">
@@ -39,15 +43,14 @@
 	</tr>
 	<tr>
 		<td>Médico: </td> <td>
-								<select class="form-control" name="usuarioMedico.idUsuario">
+								<select id="medico" onchange="carregarHorariosDisponiveis()" class="form-control" name="usuarioMedico.idUsuario">
 									<option value = "0" th:text="SELECIONE"></option>
 									<option th:each="usuario : ${usuarios}"
 									        th:value="${usuario.idUsuario}"
 									        th:text="${usuario.nomeUsuario}"/>
 								</select>
 				  		</td>
-	</tr>
-	
+	</tr>	
 	<tr>
 		<td>Data da Consulta: </td> <td> <input class="form-control" type="datetime-local" name="dataPrevista"/></td>
 	</tr>
@@ -67,10 +70,43 @@
 			</button>
 		</td>
 	</tr>
-	
-</table> 
+</table>
+<br>
+<h3>Horários Disponíveis</h3>
+<div id="quadroHorarios">
+	<table class="table">
+		<thead>
+			<td><b>Medico</b></td>
+			<td><b>Dia semana</b></td>
+			<td><b>Hora/minuto</b></td>
+		</thead>
+		<tr th:each="DisponibilidadeHorario : ${DisponibilidadeHorario}">
+			<td><span th:text="${DisponibilidadeHorario.usuario.nomeUsuario}"></span></td>
+			<td th:switch="${DisponibilidadeHorario.diaSemana}">
+							<span th:case=1>Domingo</span>
+							<span th:case=2>Segunda-Feira</span>
+							<span th:case=3>Terça-Feira</span>
+							<span th:case=4>Quarta-Feira</span>
+							<span th:case=5>Quinta-Feira</span>
+							<span th:case=6>Sexta-Feira</span>
+							<span th:case=7>Sábado</span>
+						</td>
+			<td><span class ="hora" th:text="${DisponibilidadeHorario.hora}"></span>:<span class ="hora" th:text="${DisponibilidadeHorario.minuto}"></span></td></span>
+		</tr>
+	</table>
+</div>
+ 
 </form>
 </div>
 </div>
 </body>
+<script>
+$(document).ready(function(){
+	$(".hora").each(function(){
+		if ($(this).text().length < 2)
+			$(this).text("0" + $(this).text());
+	});
+	
+});
+</script>
 </html>

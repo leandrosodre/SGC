@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sgc.SGC.models.Agenda;
+import com.sgc.SGC.models.DisponibilidadeHorario;
 import com.sgc.SGC.models.Horarios;
 import com.sgc.SGC.models.Mensagem;
 import com.sgc.SGC.models.Paciente;
 import com.sgc.SGC.models.Usuario;
 import com.sgc.SGC.repository.AgendaRepository;
+import com.sgc.SGC.repository.DisponibilidadeHorarioRepository;
 import com.sgc.SGC.repository.HorariosRepository;
 import com.sgc.SGC.repository.MensagemRepository;
 import com.sgc.SGC.repository.PacienteRepository;
@@ -44,6 +46,9 @@ public class AgendaController {
 	@Autowired
 	MensagemRepository mer;
 	
+	@Autowired
+	DisponibilidadeHorarioRepository dhr;
+	
 	@RequestMapping(value="/marcarConsulta", method=RequestMethod.GET)
 	public String marcarConsulta(Model model) {
 		List<Usuario> usuarios 			= ur.findAllMedicos();
@@ -51,6 +56,8 @@ public class AgendaController {
 		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
 		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
+		Iterable<DisponibilidadeHorario> disp = dhr.findAllDisponivel();
+		model.addAttribute("DisponibilidadeHorario", disp);
 		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		model.addAttribute("usuario", new Usuario());
 		model.addAttribute("usuarios", usuarios);
@@ -67,11 +74,14 @@ public class AgendaController {
 		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
 		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
-		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
+		
 		agenda.setUsuarioMedico(usuarioMedico);
 		Paciente paciente = pr.findByIdPaciente(agenda.getPaciente().getIdPaciente());
-		
-		ValidarAgenda validar = new ValidarAgenda(agenda, horarios);
+		Iterable<DisponibilidadeHorario> disp = dhr.findAllDisponivel();
+		model.addAttribute("DisponibilidadeHorario", disp);
+		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
+		List<DisponibilidadeHorario> horariosDisponiveis = dhr.findAllDisponivelDoMedico(usuarioMedico.getIdUsuario()); 
+		ValidarAgenda validar = new ValidarAgenda(agenda, horarios, horariosDisponiveis);
 		boolean agendaValida = validar.horariosValido();
 		
 		if ( !agendaValida ) {
@@ -85,6 +95,7 @@ public class AgendaController {
 			
 			model.addAttribute("erro", true);
 			model.addAttribute("mensagem", validar.getMensagem());
+			
 			return "agendamento/FormMarcarConsulta";
 		}else {
 			Mensagem mensagem = new Mensagem();
@@ -95,7 +106,11 @@ public class AgendaController {
 	    	mensagem.setTextoMensagem("Consulta marcada para o paciente "+ paciente.getNomeCompleto() +" no dia "+ String.format("%02d",c.get(Calendar.DAY_OF_MONTH)) + "/" + String.format("%02d", c.get(Calendar.MONTH)) + "/" + c.get(Calendar.YEAR));
 	    	mensagem.setLida('N');
 	    	mer.save(mensagem);    
-			
+	    	
+	    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+	    	disponivel.setDisponivel('N');
+	    	
+	    	dhr.save(disponivel);
 			ar.save(agenda);
 			return "redirect:/agenda";
 		}
@@ -104,7 +119,7 @@ public class AgendaController {
 	@RequestMapping("/agenda")
 	public ModelAndView carregarAgendas() {
 		ModelAndView mv = new ModelAndView("agendamento/formAgenda");
-		Iterable<Agenda> agenda = ar.findAll();
+		List<Agenda> agenda = ar.findAllAgendasEmAberto();
 		String nomeUsuario 	 = new BuscarUsuarioAutenticado().getNomeUsuarioLogado();
 		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
@@ -139,6 +154,12 @@ public class AgendaController {
     @RequestMapping(value="/agenda/delete/{idAgenda}")
     public String excluirAgenda(@RequestParam("idAgenda") long idAgenda) {
     	Agenda agenda = ar.findByIdAgenda(idAgenda);
+    	
+    	Calendar c = Calendar.getInstance();
+    	c.setTime(agenda.getDataPrevista());
+    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+    	disponivel.setDisponivel('S');
+    	dhr.save(disponivel);
         ar.delete(agenda);
         return "redirect:/agenda";
     }

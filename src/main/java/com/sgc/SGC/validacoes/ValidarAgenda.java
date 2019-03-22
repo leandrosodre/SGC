@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sgc.SGC.models.Agenda;
+import com.sgc.SGC.models.DisponibilidadeHorario;
 import com.sgc.SGC.models.Horarios;
 import com.sgc.SGC.repository.HorariosRepository;
 
@@ -19,10 +20,12 @@ public class ValidarAgenda {
 	private String  	mensagem;
 	private Agenda 	 	agenda;
 	private List<Horarios>    horarios;
+	private List<DisponibilidadeHorario> horariosDisponiveis;
 	
-	public ValidarAgenda(Agenda agenda, List<Horarios> horarios) {		
+	public ValidarAgenda(Agenda agenda, List<Horarios> horarios, List<DisponibilidadeHorario> horariosDisponiveis) {		
 		this.agenda = agenda;
 		this.horarios = horarios;
+		this.horariosDisponiveis = horariosDisponiveis;
 	}
 	
 	public boolean horariosValido() {
@@ -47,10 +50,28 @@ public class ValidarAgenda {
 			if ( horarioValido == false ) {
 				agendaValida 		= false;
 				mensagem 			= "Horário não está dentro do horário disponível do Médico";
+			} else {
+				Calendar horaConsulta = Calendar.getInstance();
+				horaConsulta.setTime(agenda.getDataPrevista());
+				int diaSemana = horaConsulta.get(Calendar.DAY_OF_WEEK);
+				
+				for (int i=0; i<horariosDisponiveis.size();i++) {
+					DisponibilidadeHorario disp = horariosDisponiveis.get(i);
+					if(diaSemana == disp.getDiaSemana()){
+						if (disp.getHora() != horaConsulta.get(Calendar.HOUR) && disp.getMinuto() != horaConsulta.get(Calendar.MINUTE)) {
+							agendaValida 		= false;
+							mensagem 			= "Horário não está dentro das opções de horários disponíveis do Médico, favor digitar um da lista abaixo.";
+						} else if (disp.getHora() == horaConsulta.get(Calendar.HOUR) && disp.getMinuto() == horaConsulta.get(Calendar.MINUTE)){
+							agendaValida 		= true;
+							mensagem 			= "";
+							return agendaValida;
+						}
+						
+					}
+				}
+				
 			}
 		}
-		
-		
 		
 		return agendaValida; 
 	}
