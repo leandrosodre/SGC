@@ -22,7 +22,7 @@ public class DataConfiguration {
 	public DataSource dataSource() throws URISyntaxException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net");
+		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net/heroku_e8e993c63c850f4?reconnect=true");
 		dataSource.setUsername("bc71a305c71f5b");
 		dataSource.setPassword("a851b34a");
 		
