@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -17,14 +18,22 @@ import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @Configuration
 public class DataConfiguration {
-
+	
 	@Bean
 	public DataSource dataSource() throws URISyntaxException {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		/*DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net/heroku_e8e993c63c850f4?reconnect=true");
 		dataSource.setUsername("bc71a305c71f5b");
 		dataSource.setPassword("a851b34a");
+		*/
+		
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net/heroku_e8e993c63c850f4?reconnect=true");
+		dataSource.setUsername("bc71a305c71f5b");
+		dataSource.setPassword("a851b34a");
+		
 		
 		/*
 		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
@@ -57,7 +66,7 @@ public class DataConfiguration {
 	public SpringSecurityDialect springSecurityDialect() {
 	    return new SpringSecurityDialect();
 	}
-	
+	/*
 	@Bean
     public EntityManagerFactory entityManagerFactory() throws URISyntaxException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -71,6 +80,6 @@ public class DataConfiguration {
         factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
         return factory.getObject();
     }
-	
+	*/
 	
 }
