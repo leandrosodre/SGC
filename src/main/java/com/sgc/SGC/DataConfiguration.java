@@ -69,7 +69,10 @@ public class DataConfiguration {
     public EntityManagerFactory entityManagerFactory() throws URISyntaxException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setGenerateDdl(Boolean.TRUE);
+        vendorAdapter.setDatabase(Database.MYSQL);
         vendorAdapter.setShowSql(Boolean.TRUE);
+        vendorAdapter.setPrepareConnection(true);
+        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL5Dialect");
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.sgc.SGC.");
