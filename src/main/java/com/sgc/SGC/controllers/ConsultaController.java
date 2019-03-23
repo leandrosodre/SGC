@@ -308,11 +308,12 @@ public class ConsultaController {
     
     @Bean
 	public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    	DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/sgc");
-		dataSource.setUsername("root");
-		dataSource.setPassword("a1b2c300");
+		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net");
+		dataSource.setUsername("bc71a305c71f5b");
+		dataSource.setPassword("a851b34a");
+		
 		return dataSource;		
 	}
 	
