@@ -27,12 +27,17 @@ public class DataConfiguration {
 		dataSource.setUsername("bc71a305c71f5b");
 		dataSource.setPassword("a851b34a");
 		*/
-		
+		System.out.println("TESTE3-1");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		System.out.println("TESTE3-2");
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		System.out.println("TESTE3-3");
 		dataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306/heroku_e8e993c63c850f4?reconnect=true");
+		System.out.println("TESTE3-4");
 		dataSource.setUsername("bc71a305c71f5b");
+		System.out.println("TESTE3-5");
 		dataSource.setPassword("a851b34a");
+		System.out.println("TESTE3-6");
 		/*
 		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
 
@@ -45,6 +50,7 @@ public class DataConfiguration {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         */
+		System.out.println("TESTE3-7");
 		return dataSource;	
 		
 	}
