@@ -30,7 +30,7 @@ public class DataConfiguration {
 		System.out.println("TESTE3-1");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		System.out.println("TESTE3-2");
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		//dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		System.out.println("TESTE3-3");
 		dataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306/heroku_e8e993c63c850f4?reconnect=true");
 		System.out.println("TESTE3-4");
