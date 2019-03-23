@@ -1,32 +1,41 @@
 package com.sgc.SGC;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 @Configuration
 public class DataConfiguration {
 	
 	@Bean
+    public BasicDataSource dataSource() throws URISyntaxException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+
+        return basicDataSource;
+    }
+
+	/*
+	@Bean
 	public DataSource dataSource() throws URISyntaxException {
-		/*DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net/heroku_e8e993c63c850f4?reconnect=true");
 		dataSource.setUsername("bc71a305c71f5b");
 		dataSource.setPassword("a851b34a");
-		*/
+		
 		System.out.println("TESTE3-1");
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		System.out.println("TESTE3-2");
@@ -38,7 +47,7 @@ public class DataConfiguration {
 		System.out.println("TESTE3-5");
 		dataSource.setPassword("a851b34a");
 		System.out.println("TESTE3-6");
-		/*
+		
 		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
 
         String username = dbUri.getUserInfo().split(":")[0];
@@ -49,7 +58,7 @@ public class DataConfiguration {
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        */
+        
 		System.out.println("TESTE3-7");
 		return dataSource;	
 		
@@ -65,12 +74,13 @@ public class DataConfiguration {
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}
+	*/
 	
 	@Bean
 	public SpringSecurityDialect springSecurityDialect() {
 	    return new SpringSecurityDialect();
 	}
-	
+	/*
 	@Bean
     public EntityManagerFactory entityManagerFactory() throws URISyntaxException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -94,5 +104,5 @@ public class DataConfiguration {
         System.out.println("TESTE6");
         return factory.getObject();
     }
-	
+	*/
 }
