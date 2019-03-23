@@ -18,27 +18,6 @@ import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 @Configuration
 public class DataConfiguration {
 
-	/*@Bean
-	public DataSource dataSource() throws URISyntaxException {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net");
-		dataSource.setUsername("bc71a305c71f5b");
-		dataSource.setPassword("a851b34a");
-		
-		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
-
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:mysql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl(dbUrl);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-		return dataSource;		
-	}*/
-
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -54,9 +33,4 @@ public class DataConfiguration {
 	public SpringSecurityDialect springSecurityDialect() {
 	    return new SpringSecurityDialect();
 	}
-	
-	  @Bean 
-	  ServletWebServerFactory servletWebServerFactory(){
-		  return new TomcatServletWebServerFactory();
-	  }
 }
