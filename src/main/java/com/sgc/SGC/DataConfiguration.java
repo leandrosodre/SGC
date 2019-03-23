@@ -1,16 +1,16 @@
 package com.sgc.SGC;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -26,7 +26,6 @@ public class DataConfiguration {
 		dataSource.setUsername("bc71a305c71f5b");
 		dataSource.setPassword("a851b34a");
 		
-		
 		/*
 		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
 
@@ -39,7 +38,8 @@ public class DataConfiguration {
         dataSource.setUsername(username);
         dataSource.setPassword(password);
         */
-		return dataSource;		
+		return dataSource;	
+		
 	}
 
 	@Bean
@@ -57,4 +57,20 @@ public class DataConfiguration {
 	public SpringSecurityDialect springSecurityDialect() {
 	    return new SpringSecurityDialect();
 	}
+	
+	@Bean
+    public EntityManagerFactory entityManagerFactory() throws URISyntaxException {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setGenerateDdl(Boolean.TRUE);
+        vendorAdapter.setShowSql(Boolean.TRUE);
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("com.sample.proj.domain");
+        factory.setDataSource(dataSource());
+        factory.afterPropertiesSet();
+        factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+        return factory.getObject();
+    }
+	
+	
 }
