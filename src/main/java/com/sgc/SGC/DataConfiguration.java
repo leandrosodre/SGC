@@ -20,13 +20,13 @@ public class DataConfiguration {
 
 	@Bean
 	public DataSource dataSource() throws URISyntaxException {
-		/*DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:5000/sgc");
-		dataSource.setUsername("root");
-		dataSource.setPassword("a1b2c300");*/
+		dataSource.setUrl("mysql://us-cdbr-iron-east-03.cleardb.net/heroku_e8e993c63c850f4?reconnect=true");
+		dataSource.setUsername("bc71a305c71f5b");
+		dataSource.setPassword("a851b34a");
 		
-		URI dbUri = new URI(System.getenv("DATABASE_URL"));
+/*		URI dbUri = new URI(System.getenv("CLEARDB_DATABASE_URL"));
 
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
@@ -36,7 +36,7 @@ public class DataConfiguration {
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
-        
+        */
 		return dataSource;		
 	}
 	
