@@ -64,7 +64,7 @@ public class DataConfiguration {
 	public SpringSecurityDialect springSecurityDialect() {
 	    return new SpringSecurityDialect();
 	}
-	/*
+	
 	@Bean
     public EntityManagerFactory entityManagerFactory() throws URISyntaxException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
@@ -72,12 +72,11 @@ public class DataConfiguration {
         vendorAdapter.setShowSql(Boolean.TRUE);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.sample.proj.domain");
+        factory.setPackagesToScan("com.sgc.SGC.");
         factory.setDataSource(dataSource());
         factory.afterPropertiesSet();
         factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
         return factory.getObject();
     }
-	*/
 	
 }
