@@ -73,12 +73,20 @@ public class DataConfiguration {
         vendorAdapter.setShowSql(Boolean.TRUE);
         vendorAdapter.setPrepareConnection(true);
         vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL5Dialect");
+        System.out.println("TESTE");
+        System.out.println(vendorAdapter.toString());
+        
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.sgc.SGC.");
         factory.setDataSource(dataSource());
         factory.afterPropertiesSet();
         factory.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+        
+        System.out.println("TESTE2");
+        System.out.println(factory.toString());
+        
+        
         return factory.getObject();
     }
 	
