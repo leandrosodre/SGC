@@ -5,6 +5,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<style>
 		.hora{
@@ -15,14 +16,15 @@
 </head>
 
 <body>
-
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 <h1>Marcar Consulta</h1>
 <div class="container">
 <form method="post">
 <table>
 	<tr>
 		<td>Paciente: </td><td>									
-								<select class="form-control" name="agenda.paciente.idPaciente">
+								<select class="form-control" name="paciente.idPaciente">
 									<option value = "0" th:text="SELECIONE"></option>
 									<option th:each="paciente : ${pacientes}"
 									        th:value="${paciente.idPaciente}"
@@ -34,7 +36,7 @@
 	</tr>
 	<tr>
 		<td>Médico: </td> <td>
-								<select class="form-control" name="agenda.usuarioMedico.idUsuario">
+								<select class="form-control" name="usuarioMedico.idUsuario">
 										<option value = "0" th:text="SELECIONE"></option>
 										<option th:each="usuario : ${usuarios}"
 										        th:value="${usuario.idUsuario}"
@@ -46,7 +48,7 @@
 	</tr>
 	
 	<tr>
-		<td>Data da Consulta: </td> <td> <input class="form-control" type="datetime-local" th:field="${agenda.dataPrevista}" name="dataPrevista"/></td>
+		<td>Data da Consulta: </td> <td> <input class="form-control" id="data" type="datetime-local" th:field="${agenda.dataPrevista}" name="dataPrevista"/></td>
 	</tr>
 	<tr height=20px>
 	</tr>
@@ -68,5 +70,25 @@
 </table> 
 </form>
 </div>
+</div>
 </body>
+<script>
+	$(document).ready(function(){
+		var data = $(this).text();
+		var dataFormatada, horaFormatada;
+		var ano, mes, dia, hora, minuto;
+		
+		
+		ano = data.substring(0,4);
+		mes = data.substring(5,7);
+		dia = data.substring(8,10);
+		
+		hora 	= data.substring (11,13);
+		minuto  = data.substring (14,16);
+		
+		
+		dataFormatada = dia + "/" + mes + "/" + ano;
+		horaFormatada = hora + ":" + minuto;
+	});
+</script>
 </html>

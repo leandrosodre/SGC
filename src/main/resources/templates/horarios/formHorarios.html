@@ -3,8 +3,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<style>
 		.hora{
@@ -15,11 +16,17 @@
 </head>
 
 <body>
-
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 <h1>Cadastro de horários</h1>
 <div class="container">
 <form method="post">
 	<table>
+			<tr><td colspan="2">
+				<div th:if="${erro}" class="alert alert-danger">    
+		    		<div th:text="${mensagem}"></div>
+		    	</div></td>
+	    	</tr>	
 			<tr>
 			<td>Médico: </td> <td>
 									<select class="form-control" name="usuario.idUsuario">
@@ -51,17 +58,17 @@
 		<tr height=10px>
 		</tr>
 		<tr>
-			<td width=135px>Hora de Chegada: </td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number" min="0" max="24" value="" name="horaInicio"/>
+			<td width=135px>Hora de Chegada: </td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number" min="0" max="24" value=0 name="horaInicio"/>
 												  <td>:</td>
-												  <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number" min="0" max="59" value="" name="minutoInicio"/></td>
+												  <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number" min="0" max="59" value=0 name="minutoInicio"/></td>
 								   			      </td>
 		</tr>
 		<tr height=10px>
 		</tr>
 		<tr>
-			<td width=135px>Hora de Saída:</td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number"  min="0" max="24" value="" name="horaFim"/></td>
+			<td width=135px>Hora de Saída:</td><td><input class="form-control hora" oninput="maxLengthHora(this)" type="number"  min="0" max="24" value=0 name="horaFim"/></td>
 											   <td>:</td>
-											   <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number"  min="0" max="59" value="" name="minutoFim"/></td>
+											   <td><input class="form-control hora" oninput="maxLengthMinuto(this)" type="number"  min="0" max="59" value=0 name="minutoFim"/></td>
 		</tr>
 		<tr height=20px>
 		</tr>
@@ -82,6 +89,9 @@
 		</tr>
 	</table>
 </form>
+</div>
+</div>
+</body>
 <script>
 	function maxLengthHora(object) {
 		var hora;
@@ -109,6 +119,4 @@
 	});
 	
 </script>
-</div>
-</body>
 </html>

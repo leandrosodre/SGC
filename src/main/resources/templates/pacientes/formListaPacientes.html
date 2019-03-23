@@ -7,10 +7,33 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+		#msg{
+			 width:80%;
+			 margin-left:10%;
+		}
+
+	</style>
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 	<h1>Lista de pacientes</h1>	
 	<div>
 	<a href="/cadastrarPaciente">
@@ -21,6 +44,35 @@
 	<a href="/paginaInicial">
 		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
 	</a>
+	</div>
+	<div>
+		<table class="table table-bordered" id="td">
+			<tr><td colspan="4" id="filtro"><b>Filtros</b></td></tr>
+			<tr>
+				<td style="vertical-align: middle" id="pad">
+					<b>CPF: </b>
+				</td> 
+				<td id="pad">
+					<input id="cpf" class="form-control" type="text"/>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Nome: </b>
+				</td> 
+				<td id="pad">
+					<input id="nome" class="form-control" type="text"	/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:right" id="pad">
+					<a onclick="busca()">
+						<button type="button" class="btn btn-primary">
+					  			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+						</button>
+					</a>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div class="container">
 		<table class="table">
@@ -52,6 +104,17 @@
 			</tr>
 		</table>
 	</div>
+	<div id="msg" th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}">
+	</div>
+	</div>
 </body>
+<script>
+	function busca(){
+		var cpf = $("#cpf").val();
+		var nome = $("#nome").val();
+		
+		window.location.href='buscarPacientes?cpf='+ cpf +'&nome=' + nome;
+	}
+</script>
 </html>
 
