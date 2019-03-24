@@ -120,7 +120,7 @@ public class ExameController {
 		model.addAttribute("paciente", new Paciente());
 		model.addAttribute("pacientes", pacientes);
 		
-		return "exames/FormExame";
+		return "exames/formExame";
 	}
 	
 	
@@ -148,7 +148,7 @@ public class ExameController {
 		if (!exameValido) {
 			model.addAttribute("erro", true);
 			model.addAttribute("mensagem", validar.getMensagem());
-	        return "exames/FormExame";
+	        return "exames/formExame";
 		}else {
 			er.save(exame);
 			return "redirect:/exame";

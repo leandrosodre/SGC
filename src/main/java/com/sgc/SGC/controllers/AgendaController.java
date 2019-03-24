@@ -63,7 +63,7 @@ public class AgendaController {
 		model.addAttribute("usuarios", usuarios);
 		model.addAttribute("paciente", new Paciente());
 		model.addAttribute("pacientes", pacientes);
-		return "agendamento/FormMarcarConsulta";
+		return "agendamento/formMarcarConsulta";
 	}
 	
 	@RequestMapping(value="/marcarConsulta", method=RequestMethod.POST)
@@ -96,7 +96,7 @@ public class AgendaController {
 			model.addAttribute("erro", true);
 			model.addAttribute("mensagem", validar.getMensagem());
 			
-			return "agendamento/FormMarcarConsulta";
+			return "agendamento/formMarcarConsulta";
 		}else {
 			Mensagem mensagem = new Mensagem();
 	    	mensagem.setUsuarioRemet(usuarioLogado);
