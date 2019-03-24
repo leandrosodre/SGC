@@ -99,7 +99,7 @@ public class ValidarAgenda {
 			Horarios horario = horarios.get(i);
 			if (horario.getDiaSemana() == diaSemana) {
 				horaInicial.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
-								horario.getHoraInicio(), horario.getMinutoInicio(), 00);
+								horario.getHoraInicio()-1, horario.getMinutoInicio()-1, 59);
 				
 				horaFinal.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
 							horario.getHoraFim(), horario.getMinutoFim(), 59);
