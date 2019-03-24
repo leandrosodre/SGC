@@ -24,6 +24,7 @@ public class DataConfiguration {
         basicDataSource.setUsername(username);
         basicDataSource.setPassword(password);
 
+        
         return basicDataSource;
     }
 	
