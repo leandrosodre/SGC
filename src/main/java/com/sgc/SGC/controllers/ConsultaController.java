@@ -280,6 +280,7 @@ public class ConsultaController {
     	parameters.put("titulo", "Receita");
     	parameters.put("DataNascimento", dtFormatada);
     	parameters.put("nomeMedico", medico.getNomeUsuario());
+    	
     	JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource().getConnection());
     	
     	JRPdfExporter exporter = new JRPdfExporter();
