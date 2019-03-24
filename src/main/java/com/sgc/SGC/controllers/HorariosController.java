@@ -93,7 +93,6 @@ public class HorariosController {
 		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
 		Horarios horarios = hr.findByIdHorarios(idHorarios);
-		excluirDisponibilidade(horarios);
 		List<Usuario> usuarios = ur.findAllMedicos();
 		ModelAndView mv = new ModelAndView("horarios/formEditarHorarios");
 		mv.addObject("horarios", horarios);
@@ -104,6 +103,7 @@ public class HorariosController {
 	
 	@RequestMapping(value="/horarios/{idHorarios}", method=RequestMethod.POST)
 	public String atualizarHorarios(Horarios horarios) {
+		excluirTodasDisponibilidades(horarios.getUsuario().getIdUsuario());
 		cadastrarDisponibilidade(horarios);
 		hr.save(horarios);
 		return "redirect:/horarios";
@@ -161,11 +161,19 @@ public class HorariosController {
 			if (h < 24) {
 				for (int m=horarios.getMinutoInicio(); m<60;m = m+30) {
 					if (m < 60) {
-						DisponibilidadeHorario disp = dhr.findRegistro(horarios.getDiaSemana(), h, m);
+						DisponibilidadeHorario disp = dhr.findRegistro(horarios.getDiaSemana(), h, m, horarios.getUsuario().getIdUsuario());
 						dhr.delete(disp);
 					}
 				}
 			}
+		}
+	}
+	
+	private void excluirTodasDisponibilidades(long idUsuario) {
+		List <DisponibilidadeHorario> horarios = dhr.findAllDisponivelDoMedico(idUsuario);
+		for (int i=0; i < horarios.size(); i++) {
+			DisponibilidadeHorario disp = horarios.get(i);
+			dhr.delete(disp);
 		}
 	}
 }

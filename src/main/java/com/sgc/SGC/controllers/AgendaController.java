@@ -107,7 +107,7 @@ public class AgendaController {
 	    	mensagem.setLida('N');
 	    	mer.save(mensagem);    
 	    	
-	    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+	    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE), usuarioMedico.getIdUsuario());
 	    	disponivel.setDisponivel('N');
 	    	
 	    	dhr.save(disponivel);
@@ -157,7 +157,7 @@ public class AgendaController {
     	
     	Calendar c = Calendar.getInstance();
     	c.setTime(agenda.getDataPrevista());
-    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE));
+    	DisponibilidadeHorario disponivel = dhr.findRegistro(c.get(Calendar.DAY_OF_WEEK), c.get(Calendar.HOUR), c.get(Calendar.MINUTE), agenda.getUsuarioMedico().getIdUsuario());
     	disponivel.setDisponivel('S');
     	dhr.save(disponivel);
         ar.delete(agenda);
