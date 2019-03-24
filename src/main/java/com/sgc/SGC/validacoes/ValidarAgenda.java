@@ -116,7 +116,6 @@ public class ValidarAgenda {
 				System.out.println("Compare 2 : " + comp2);
 				
 				
-				
 				if (horaConsulta.compareTo(horaInicial) >= 0 && horaConsulta.compareTo(horaFinal) <= 0) {
 					horarioValido = true;
 					return horarioValido;
