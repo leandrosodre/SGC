@@ -10,9 +10,57 @@
 	<script src="js/bootstrap.min.js"></script>
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
+	<style>
+		#tbtopo{
+			height:100%;
+		}
+		#atalhos{
+			
+		}
+		h3{
+			text-align:center;
+		}
+	</style>
 </head>
 <body>
 <div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})">
+</div>
+<div id="pagina">
+	<div id="tbtopo">
+		<table class="container">
+			<tr><td><h1>Sistema de Gestão de Clínicas</h1></td></tr>
+			<tr><td><span th:text="'Bem vindo, ' + ${nomeUsuario} + ' !'"></span></td></tr>
+			<tr><td><span th:text="'Você possui ' + ${quantidadeNaolidas} + ' mensagens não lidas.'"></span></td></tr>
+		</table>
+		<h3>Atalhos</h3>
+		<table id="atalhos" class="container">
+			<tr><td style="text-align: center;">
+					<a href="/enviarMensagem">
+						<button type="button" class="btn btn-primary">
+					  		<span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp Enviar Mensagem
+						</button>
+					</a>
+					
+					<a href="/marcarConsulta">
+						<button type="button" class="btn btn-primary">
+					  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp Marcar Consulta
+						</button>
+					</a>
+					
+					<a href="/cadastrarPaciente">
+						<button type="button" class="btn btn-primary">
+					  		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp Cadastrar Paciente
+						</button>
+					</a>
+					
+					<a href="/solicitarExame">
+						<button type="button" class="btn btn-primary">
+					  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp Solicitar Exame
+						</button>
+					</a>
+			</tr>
+		</table>
+	</div>
 </div>
 </body>
 </html>

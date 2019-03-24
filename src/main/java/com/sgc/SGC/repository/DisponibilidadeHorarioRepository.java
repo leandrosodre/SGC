@@ -10,7 +10,7 @@ import com.sgc.SGC.models.DisponibilidadeHorario;
 public interface DisponibilidadeHorarioRepository extends CrudRepository<DisponibilidadeHorario, String>{
 	DisponibilidadeHorario findByIdDispo(long idDispo);
 	
-	@Query("select d from DisponibilidadeHorario d where d.disponivel = 'S'")
+	@Query("select d from DisponibilidadeHorario d where d.disponivel = 'S' order by d.diaSemana")
 	List<DisponibilidadeHorario> findAllDisponivel();
 	
 	@Query("select d from DisponibilidadeHorario d where d.disponivel = 'S' and d.usuario.idUsuario = ?1")
@@ -18,7 +18,5 @@ public interface DisponibilidadeHorarioRepository extends CrudRepository<Disponi
 	
 	@Query("select d from DisponibilidadeHorario d where d.diaSemana = ?1 and d.hora = ?2 and d.minuto = ?3")
 	DisponibilidadeHorario findRegistro(int Diasemana, int hora, int minuto);
-	
-	
 	
 }

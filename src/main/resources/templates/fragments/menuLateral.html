@@ -63,12 +63,12 @@
 			  <a href="/medicamentos">Medicamentos</a>
 			</div>
 		</li>
-		<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
+		<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED') or hasRole('ROLE_USER')">
 			<div>
 			  <a href="/solicitarExame">Solicitar Exames</a>
 			</div>
 		</li>
-		<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
+		<li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED') or hasRole('ROLE_USER')">
 			<div>
 			  <a href="/exame">Histórico de Exames</a>
 			</div>
