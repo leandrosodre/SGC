@@ -26,7 +26,7 @@ public class PaginaInicialController {
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
 		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
 		
-		return "/paginaInicial";	
+		return "paginaInicial";	
 	}
 	
 }
