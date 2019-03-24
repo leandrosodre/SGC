@@ -243,7 +243,6 @@ public class ExameController {
         	int ponto = extensao.lastIndexOf(".");
         	extensao = extensao.substring(ponto, extensao.length());
         	exameValores.setFormatoArquivo(extensao);
-        	System.out.println(UPLOADED_FOLDER + "exame_" + exameValores.idExame + extensao);
     		
             byte[] bytes = file.getBytes();
             Path path = Paths.get(UPLOADED_FOLDER + "exame_" + exameValores.idExame + extensao);
@@ -270,8 +269,6 @@ public class ExameController {
 	@RequestMapping(value="/downloadExame/{idExame}", method=RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> downloadExame(@PathVariable("idExame") long idExame) throws FileNotFoundException {
 		Exame exame = er.findByIdExame(idExame);
-		
-		System.out.println(UPLOADED_FOLDER + "exame_" + idExame + exame.getFormatoArquivo());
 		
         File file = new File(UPLOADED_FOLDER + "exame_" + idExame + exame.getFormatoArquivo());
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));

@@ -104,6 +104,19 @@ public class ValidarAgenda {
 				horaFinal.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
 							horario.getHoraFim(), horario.getMinutoFim());
 				
+				System.out.println("hora Consulta : " + horaConsulta.toString());
+				System.out.println("hora final : " + horaInicial.toString());
+				System.out.println("hora Inicial : " + horaFinal.toString());
+				
+				int comp1, comp2;
+				comp1 = horaConsulta.compareTo(horaInicial);
+				comp2 = horaConsulta.compareTo(horaFinal);
+				
+				System.out.println("Compare 1 : " + comp1);
+				System.out.println("Compare 2 : " + comp2);
+				
+				
+				
 				if (horaConsulta.compareTo(horaInicial) >= 0 && horaConsulta.compareTo(horaFinal) <= 0) {
 					horarioValido = true;
 					return horarioValido;
