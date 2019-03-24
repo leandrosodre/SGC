@@ -102,7 +102,7 @@ public class ValidarAgenda {
 								horario.getHoraInicio(), horario.getMinutoInicio(), 00);
 				
 				horaFinal.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
-							horario.getHoraFim(), horario.getMinutoFim(), 00);
+							horario.getHoraFim(), horario.getMinutoFim(), 59);
 				
 				System.out.println("hora Consulta : " + horaConsulta.toString());
 				System.out.println("hora Inicial : " + horaInicial.toString());
