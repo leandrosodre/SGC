@@ -9,25 +9,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 </head>
 <body>
-<h1>SGC</h1>
-
-<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
-  <h3><a href="/">Realizar Consulta</a></h3>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})">
 </div>
-
-<h3><a href="/pacientes">Pacientes  </a></h3>
-<h3><a href="/agenda">Agendamento de Consultas</a></h3>
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-  <h3><a href="/usuarios">Usuários</a></h3>
-</div>
-
-<div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_MED')">
-  <h3><a href="/horarios">Horários</a></h3>
-</div>
-
-<h3><a href="/logout">Logout</a></h3>
-	
 </body>
 </html>

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,18 +31,18 @@ public class Agenda {
 		private Paciente paciente;
 		
 		@ManyToOne
-		public Usuario usuarioMarcador;
-		
-		@ManyToOne
 		public Usuario usuarioMedico;
+		
+		@OneToOne
+		private Consulta consulta;
 
 		
-		public Usuario getUsuarioMarcador() {
-			return usuarioMarcador;
+		public Consulta getConsulta() {
+			return consulta;
 		}
 
-		public void setUsuarioMarcador(Usuario usuarioMarcador) {
-			this.usuarioMarcador = usuarioMarcador;
+		public void setConsulta(Consulta consulta) {
+			this.consulta = consulta;
 		}
 
 		public Usuario getUsuarioMedico() {

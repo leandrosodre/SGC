@@ -18,5 +18,16 @@ public interface UsuarioRepository extends CrudRepository<Usuario, String>{
 	
 	@Query("select u from Usuario u where u.nivel = 3 and u.status = 'A'")
 	List<Usuario> findAllMedicos();
+	
+	@Query("select u from Usuario u where u.status = 'A'")
+	List<Usuario> findAllAtivos();
 
+	@Query("select u from Usuario u where u.nomeUsuario like %?1%")
+	Iterable<Usuario> findAllByName(String nome);
+	
+	@Query("select u from Usuario u where u.nivel = ?1")
+	Iterable<Usuario> findAllByNivel(int nivel);
+	
+	@Query("select u from Usuario u where u.status = ?1")
+	Iterable<Usuario> findAllByStatus(char status);
 }

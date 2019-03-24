@@ -3,13 +3,15 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="js/jquery.mask.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../js/jquery.mask.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 </head>
 
 <body>
-
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 	<h1>Cadastro de Usuario</h1>
 	
 	<form class="container" method="post">
@@ -24,7 +26,7 @@
 			<td>Login:</td> <td><input class="form-control" type="text" th:value="${usuario.login}" name="login"/></td>
 		</tr>
 		<tr>
-		<td>Senha:</td> 			<td><input class="form-control" type="password" th:value="${usuario.senha}" name="senha"/></td>
+		<td>Senha:</td> 			<td><input class="form-control" type="password" maxlength="15" th:value="${usuario.senha}" name="senha"/></td>
 		</tr>
 		<tr>
 		<td>Nível:</td> 		<td>
@@ -32,6 +34,7 @@
 												<option th:value = 1 th:selected="${usuario.nivel}==1">Administrador</option>
 												<option th:value = 2 th:selected="${usuario.nivel}==2">Recepcionista</option>
 												<option th:value = 3 th:selected="${usuario.nivel}==3">Médico</option>
+												<option th:value = 4 th:selected="${usuario.nivel}==4">Laboratório</option>
 											</select>
 								</td>
 		</tr>
@@ -62,6 +65,7 @@
 		</tr>
 		</table>
 	</form>
+</div>
 </body>
 	<script>
 		$(document).ready(function(){

@@ -7,11 +7,29 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/jquery.mask.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+	<style>
+		#td{
+			width: 50%;
+			margin-left: 120px;
+			margin-top:15px;
+			padding:1px;
+		}
+		#filtro{
+			text-align:center;
+			padding:1px;
+		}
+		#pad{
+			padding:2px;
+		}
+	</style>
 </head>
 
 <body>
-	<h1>Lista de Horarios</h1>	
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
+	<h1>Lista de Consultas</h1>	
 	<div>
 	<a href="/marcarConsulta">
 		<button type="button" class="btn btn-primary">
@@ -21,6 +39,35 @@
 	<a href="/paginaInicial">
 		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
 	</a>
+	</div>
+	<div>
+		<table class="table table-bordered" id="td">
+			<tr><td colspan="4" id="filtro"><b>Filtros</b></td></tr>
+			<tr>
+				<td style="vertical-align: middle" id="pad">
+					<b>Médico: </b>
+				</td> 
+				<td id="pad">
+					<input id="nomeMedico" class="form-control" type="text"	/>
+				</td>
+				
+				<td style="vertical-align: middle" id="pad">
+					<b>Paciente: </b>
+				</td> 
+				<td id="pad">
+					<input id="nomePaciente" class="form-control" type="text"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align:right" id="pad">
+					<a onclick="busca()">
+						<button type="button" class="btn btn-primary">
+					  			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+						</button>
+					</a>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div class="container">
 	<table class="table">
@@ -56,6 +103,7 @@
 			</tr>
 		</table>
 	</div>
+</div>
 <script>
 	$(document).ready(function(){
 		$(".data").each(function(){
@@ -82,6 +130,12 @@
 		});
 		
 	});
+	function busca(){
+		var nomePaciente = $("#nomePaciente").val();
+		var nomeMedico 	 = $("#nomeMedico").val();
+		
+		window.location.href='buscarAgendas?nomePaciente='+ nomePaciente +'&nomeMedico=' + nomeMedico;
+	}
 </script>
 </body>
 </html>

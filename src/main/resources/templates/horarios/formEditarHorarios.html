@@ -3,8 +3,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 	<style>
 		.hora{
@@ -15,7 +16,8 @@
 </head>
 
 <body>
-
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 <h1>Cadastro de horários</h1>
 <div class="container">
 <form method="post">
@@ -83,6 +85,9 @@
 		</tr>
 	</table>
 </form>
+</div>
+</div>
+</body>
 <script>
 	function maxLengthHora(object) {
 		var hora;
@@ -125,6 +130,4 @@
 	    });
 	});
 </script>
-</div>
-</body>
 </html>

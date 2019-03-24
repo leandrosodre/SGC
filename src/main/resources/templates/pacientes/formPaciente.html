@@ -15,10 +15,13 @@
 			padding:10px;
 		}
 	</style>
+	<link rel="stylesheet" type="text/css" href="css/masterPage.css">
 	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
 </head>
 
 <body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
 	<h1>Cadastro de Pacientes</h1>
 	<form class ="container" method="post">
 		<table>
@@ -113,6 +116,7 @@
 		</tr>
 		</table>
 	</form>
+</div>
 </body>
 	<script>
 		$(document).ready(function(){

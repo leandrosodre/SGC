@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="../js/jquery.mask.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/masterPage.css">
+	<title>SGC - Sistema de Gerenciamento de Clinicas</title>
+</head>
+
+<body>
+<div th:replace="fragments/menuLateral :: menuLateral(${quantidadeNaolidas})"></div>
+<div id="pagina">
+	<h1>Histórico de exames</h1>	
+	<div>
+	<a href="/paginaInicial">
+		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span></button>
+	</a>
+	</div>
+	<div class="container">
+		<table class="table">
+			<thead>
+				<td><b>Número Exame</b></td>
+				<td><b>Nome Paciente</b></td>
+				<td><b>Tipo de Exame</b></td>
+				<td><b>Data do Exame</b></td>
+				<td><b>Abrir</b></td>
+			</thead>
+			<tr th:each="exame : ${exames}">
+					<td><span th:text="${exame.idExame}"></span></td>
+					<td><span th:text="${exame.paciente.NomeCompleto}"></span></td>
+					<td><span th:text="${exame.tipoExame.tipoExame}"></span></td>
+					<td><span class="data" th:text="${exame.dataExame}"></span></td>
+					<td width="10px">
+						<a th:href="${(#mvc.url('EC#carregarExame').arg(0, exame.idExame)).build()}">
+							<button type="button" class="btn btn-primary">
+				  				<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+							</button>
+						</a>
+					</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</body>
+<script>
+	$(document).ready(function(){
+		$(".data").each(function (){
+			var data = $(this).text();
+			var dataFormatada, horaFormatada;
+			var ano, mes, dia, hora, minuto;
+			
+			
+			ano = data.substring(0,4);
+			mes = data.substring(5,7);
+			dia = data.substring(8,10);
+			
+			hora 	= data.substring (11,13);
+			minuto  = data.substring (14,16);
+			
+			
+			dataFormatada = dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto;
+			
+			$(this).text(dataFormatada);
+		});
+	});
+</script>
+</html>
+
