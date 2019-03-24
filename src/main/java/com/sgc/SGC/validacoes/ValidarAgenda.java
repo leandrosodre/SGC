@@ -99,14 +99,14 @@ public class ValidarAgenda {
 			Horarios horario = horarios.get(i);
 			if (horario.getDiaSemana() == diaSemana) {
 				horaInicial.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
-								horario.getHoraInicio(), horario.getMinutoInicio(), 59);
+								horario.getHoraInicio(), horario.getMinutoInicio(), 00);
 				
 				horaFinal.set(horaConsulta.get(Calendar.YEAR), horaConsulta.get(Calendar.MONTH), horaConsulta.get(Calendar.DATE), 
-							horario.getHoraFim(), horario.getMinutoFim(), 59);
+							horario.getHoraFim(), horario.getMinutoFim(), 00);
 				
 				System.out.println("hora Consulta : " + horaConsulta.toString());
-				System.out.println("hora final : " + horaInicial.toString());
-				System.out.println("hora Inicial : " + horaFinal.toString());
+				System.out.println("hora Inicial : " + horaInicial.toString());
+				System.out.println("hora final : " + horaFinal.toString());
 				
 				int comp1, comp2;
 				comp1 = horaConsulta.compareTo(horaInicial);
