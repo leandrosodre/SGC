@@ -103,7 +103,7 @@ public class HorariosController {
 	
 	@RequestMapping(value="/horarios/{idHorarios}", method=RequestMethod.POST)
 	public String atualizarHorarios(Horarios horarios) {
-		excluirTodasDisponibilidades(horarios.getUsuario().getIdUsuario());
+		excluirDisponibilidade(horarios);
 		cadastrarDisponibilidade(horarios);
 		hr.save(horarios);
 		return "redirect:/horarios";
@@ -112,7 +112,7 @@ public class HorariosController {
     @RequestMapping(value="/horarios/delete/{idHorarios}")
     public String excluirHorarios(@RequestParam("idHorarios") long idHorarios) {
     	Horarios horarios = hr.findByIdHorarios(idHorarios);
-    	excluirDisponibilidade(horarios);    	
+    	excluirTodasDisponibilidades(horarios);    	
         hr.delete(horarios);
         return "redirect:/horarios";
     }
@@ -157,22 +157,24 @@ public class HorariosController {
 	}
 	
 	private void excluirDisponibilidade(Horarios horarios) {
-		for (int h=horarios.getHoraInicio(); h<horarios.getHoraFim();h++) {
+		for (int h=horarios.getHoraInicio(); h<24;h++) {
 			if (h < 24) {
 				for (int m=horarios.getMinutoInicio(); m<60;m = m+30) {
 					if (m < 60) {
 						DisponibilidadeHorario disp = dhr.findRegistro(horarios.getDiaSemana(), h, m, horarios.getUsuario().getIdUsuario());
-						dhr.delete(disp);
+						if (disp != null) {
+							dhr.delete(disp);
+						}
 					}
 				}
 			}
 		}
 	}
 	
-	private void excluirTodasDisponibilidades(long idUsuario) {
-		List <DisponibilidadeHorario> horarios = dhr.findAllDisponivelDoMedico(idUsuario);
-		for (int i=0; i < horarios.size(); i++) {
-			DisponibilidadeHorario disp = horarios.get(i);
+	private void excluirTodasDisponibilidades(Horarios horarios) {
+		List <DisponibilidadeHorario> listdispo = dhr.findAllDisponivelDoMedicoPeriodo(horarios.getUsuario().getIdUsuario(), horarios.getDiaSemana(), horarios.getHoraInicio(), horarios.getHoraFim());
+		for (int i=0; i < listdispo.size(); i++) {
+			DisponibilidadeHorario disp = listdispo.get(i);
 			dhr.delete(disp);
 		}
 	}

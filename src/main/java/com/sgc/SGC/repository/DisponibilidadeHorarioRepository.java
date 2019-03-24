@@ -19,4 +19,7 @@ public interface DisponibilidadeHorarioRepository extends CrudRepository<Disponi
 	@Query("select d from DisponibilidadeHorario d where d.diaSemana = ?1 and d.hora = ?2 and d.minuto = ?3 and d.usuario.idUsuario= ?4")
 	DisponibilidadeHorario findRegistro(int Diasemana, int hora, int minuto, Long idUsuario);
 	
+	@Query("select d from DisponibilidadeHorario d where d.usuario.idUsuario = ?1 and d.diaSemana =?2 and d.hora >= ?3 and d.hora <= ?4")
+	List<DisponibilidadeHorario> findAllDisponivelDoMedicoPeriodo(Long idUsuario, int diaSemana, int horaInicial, int horaFinal);
+	
 }
