@@ -85,6 +85,7 @@ public class ConsultaController {
 		mv.addObject("paciente", new Paciente());
 		mv.addObject("pacientes", pacientes);
 		mv.addObject("agendas", agendas);
+		
 		return mv;
 	}
 	
