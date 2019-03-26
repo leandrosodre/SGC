@@ -25,7 +25,7 @@ public class PaginaInicialController {
 		Usuario usuarioLogado = ur.findByLogin(nomeUsuario);
 		int quantidadeNaolidas = mer.findAllMensagensNaoLidas(usuarioLogado.getIdUsuario());
 		model.addAttribute("quantidadeNaolidas", quantidadeNaolidas);
-		model.addAttribute("nomeUsuario", nomeUsuario);
+		model.addAttribute("nomeUsuario", usuarioLogado.getNomeUsuario());
 		return "paginaInicial";	
 	}
 	
